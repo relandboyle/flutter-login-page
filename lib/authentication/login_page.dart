@@ -1,18 +1,62 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_page/components/my_button.dart';
+import 'package:login_page/components/my_loading_dialog.dart';
 import 'package:login_page/components/my_square_tile.dart';
 import 'package:login_page/components/my_textfield.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  final userNameController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signUserIn() {
-    print(userNameController.text);
-    print(passwordController.text);
+  void signUserIn() async {
+    showLoadingDialog(context);
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      if (mounted) hideLoadingDialog(context);
+    } on FirebaseAuthException catch (e) {
+      if (mounted) hideLoadingDialog(context);
+      if (e.code == 'invalid-email') {
+        wrongEmailAlert();
+      } else if (e.code == 'missing-password' || e.code == 'invalid-credential') {
+        wrongPasswordAlert();
+      }
+    }
   }
+
+  void wrongEmailAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Incorrect Email'),
+        );
+      }
+    );
+  }
+
+  void wrongPasswordAlert() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Text('Incorrect Password'),
+        );
+      }
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +76,7 @@ class LoginPage extends StatelessWidget {
                   Text('Welcome back, you\'ve been missed!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
                   const SizedBox(height: 25),
                   //username
-                  MyTextField(controller: userNameController, hintText: 'Username', obscureText: false),
+                  MyTextField(controller: emailController, hintText: 'Username', obscureText: false),
                   const SizedBox(height: 10),
                   // password
                   MyTextField(
