@@ -4,32 +4,39 @@ import 'package:login_page/components/my_button.dart';
 import 'package:login_page/components/my_loading_dialog.dart';
 import 'package:login_page/components/my_square_tile.dart';
 import 'package:login_page/components/my_textfield.dart';
-import 'package:login_page/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+import '../services/auth_service.dart';
+
+class RegisterPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
-  const LoginPage({super.key, required this.toggleLoginRegister});
+  const RegisterPage({super.key, required this.toggleLoginRegister});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void signUserIn() async {
+  void registerUser() async {
     showLoadingDialog(context);
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    if (passwordController.text == confirmPasswordController.text) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        if (mounted) hideLoadingDialog(context);
+      } on FirebaseAuthException catch (e) {
+        if (mounted) hideLoadingDialog(context);
+        showErrorCode(e.code);
+      }
+    } else {
       if (mounted) hideLoadingDialog(context);
-    } on FirebaseAuthException catch (e) {
-      if (mounted) hideLoadingDialog(context);
-      showErrorCode(e.code);
+      showErrorCode('Passwords do not match');
     }
   }
 
@@ -64,10 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const SizedBox(height: 50),
                   // logo
-                  const Icon(Icons.lock, size: 100),
+                  const Icon(Icons.lock, size: 48),
                   const SizedBox(height: 50),
                   // welcome
-                  Text('Welcome back, you\'ve been missed!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+                  Text('Please create an account!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
                   const SizedBox(height: 25),
                   //username
                   MyTextField(controller: emailController, hintText: 'Username', obscureText: false),
@@ -75,21 +82,13 @@ class _LoginPageState extends State<LoginPage> {
                   // password
                   MyTextField(controller: passwordController, hintText: 'Password', obscureText: true),
                   const SizedBox(height: 10),
-                  // forgot password?
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('Forgot Password?', style: TextStyle(color: Colors.grey[600])),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 25),
+                  // password confirm
+                  MyTextField(controller: confirmPasswordController, hintText: 'Confirm Password', obscureText: true),
+                  const SizedBox(height: 50),
                   // sign in button
                   MyButton(
-                    onTap: signUserIn,
-                    label: 'Sign In',
+                    onTap: registerUser,
+                    label: 'Create Account',
                   ),
                   const SizedBox(height: 50),
                   // or continue with
@@ -103,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         )),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text('Or continue with:', style: TextStyle(color: Colors.grey[700]))),
+                            child: Text('Or continue with', style: TextStyle(color: Colors.grey[700]))),
                         Expanded(
                             child: Divider(
                           thickness: 0.5,
@@ -115,22 +114,22 @@ class _LoginPageState extends State<LoginPage> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     MySquareTile(
                       imagePath: 'lib/images/google.png',
-                      onTap: () => AuthService().authenticateWithGoogle(),
+                      onTap: AuthService().authenticateWithGoogle(),
                     ),
                     const SizedBox(width: 20),
                     MySquareTile(
                       imagePath: 'lib/images/apple.png',
-                      onTap: () => print('APPLE'),
+                      onTap: () {},
                     ),
                   ]),
                   const SizedBox(height: 50),
                   // not registered? register now
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Not registered?', style: TextStyle(color: Colors.grey[700])),
+                    Text('Already registered?', style: TextStyle(color: Colors.grey[700])),
                     const SizedBox(width: 4),
                     GestureDetector(
                         onTap: widget.toggleLoginRegister,
-                        child: const Text('Create an account.', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
+                        child: const Text('Sign in here.', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
                   ])
                 ]),
               ),
