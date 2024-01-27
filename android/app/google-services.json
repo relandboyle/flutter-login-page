@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "248012719518",
+    "project_id": "heat-sync",
+    "storage_bucket": "heat-sync.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248012719518:android:5afd6874f806702301428f",
+        "android_client_info": {
+          "package_name": "com.example.login_page"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwHU9nfOfK50fbUgaayIqvkeBr8aJfOMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
