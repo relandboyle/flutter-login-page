@@ -6,6 +6,7 @@ import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
 
+
 class LoginPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
   const LoginPage({super.key, required this.toggleLoginRegister});
@@ -87,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+
                         GestureDetector(
                           onTap: forgotPassword,
                           child: Text(
