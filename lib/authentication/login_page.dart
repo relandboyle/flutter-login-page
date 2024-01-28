@@ -6,7 +6,6 @@ import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
 
-
 class LoginPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
   const LoginPage({super.key, required this.toggleLoginRegister});
@@ -19,8 +18,17 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void forgotPassword() {
-    print('FORGOT PASSWORD');
+  void forgotPassword() async {
+    showLoadingDialog(context);
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+      if (mounted) hideLoadingDialog(context);
+      showFeedback('Sent reset email', Colors.green);
+    } on FirebaseAuthException catch (e) {
+      if (mounted) hideLoadingDialog(context);
+      showFeedback(e.code, Colors.red);
+    }
   }
 
   void signUserIn() async {
@@ -34,22 +42,22 @@ class _LoginPageState extends State<LoginPage> {
       if (mounted) hideLoadingDialog(context);
     } on FirebaseAuthException catch (e) {
       if (mounted) hideLoadingDialog(context);
-      showErrorCode(e.code);
+      showFeedback(e.code, Colors.red);
     }
   }
 
-  void showErrorCode(String errorCode) {
+  void showFeedback(String message, Color color) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.red,
+          backgroundColor: color,
           elevation: 10,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           titleTextStyle: TextStyle(color: Colors.grey[100], fontWeight: FontWeight.bold),
           title: Center(
             child: Text(
-              errorCode,
+              message,
             ),
           ),
         );
@@ -88,7 +96,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-
                         GestureDetector(
                           onTap: forgotPassword,
                           child: Text(
@@ -106,6 +113,22 @@ class _LoginPageState extends State<LoginPage> {
                     label: 'Sign In',
                   ),
                   const SizedBox(height: 50),
+                  // not registered? register now
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Not registered?', style: TextStyle(color: Colors.grey[700])),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: widget.toggleLoginRegister,
+                        child: const Text(
+                          'Create an account.',
+                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
                   // or continue with
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -137,26 +160,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(width: 20),
                     MySquareTile(
-                      imagePath: 'lib/images/apple.png',
+                      imagePath: 'lib/images/github.png',
                       onTap: () => print(widget),
                     ),
                   ]),
-                  const SizedBox(height: 50),
-                  // not registered? register now
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Not registered?', style: TextStyle(color: Colors.grey[700])),
-                      const SizedBox(width: 4),
-                      GestureDetector(
-                        onTap: widget.toggleLoginRegister,
-                        child: const Text(
-                          'Create an account.',
-                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),
