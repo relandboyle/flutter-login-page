@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_page/components/my_button.dart';
-import 'package:login_page/components/my_loading_dialog.dart';
-import 'package:login_page/components/my_square_tile.dart';
-import 'package:login_page/components/my_textfield.dart';
-
+import '../components/my_button.dart';
+import '../components/my_loading_dialog.dart';
+import '../components/my_square_tile.dart';
+import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -72,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 50),
                   // logo
                   const Icon(Icons.lock, size: 48),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 41),
                   // welcome
                   Text('Please create an account!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
                   const SizedBox(height: 25),
@@ -102,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         )),
                         Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text('Or continue with', style: TextStyle(color: Colors.grey[700]))),
+                            child: Text('Or continue with:', style: TextStyle(color: Colors.grey[700]))),
                         Expanded(
                             child: Divider(
                           thickness: 0.5,
@@ -114,12 +113,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     MySquareTile(
                       imagePath: 'lib/images/google.png',
-                      onTap: AuthService().authenticateWithGoogle(),
+                      onTap: () => AuthService().authenticateWithGoogle(),
                     ),
                     const SizedBox(width: 20),
                     MySquareTile(
                       imagePath: 'lib/images/apple.png',
-                      onTap: () {},
+                      onTap: () => print(widget),
                     ),
                   ]),
                   const SizedBox(height: 50),
@@ -129,12 +128,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(width: 4),
                     GestureDetector(
                         onTap: widget.toggleLoginRegister,
-                        child: const Text('Sign in here.', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
+                        child: const Text('Sign in.', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
                   ])
                 ]),
               ),
             ),
           ),
-        ));
+        ),);
   }
 }
