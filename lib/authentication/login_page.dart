@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_page/components/my_button.dart';
-import 'package:login_page/components/my_loading_dialog.dart';
-import 'package:login_page/components/my_square_tile.dart';
-import 'package:login_page/components/my_textfield.dart';
-import 'package:login_page/services/auth_service.dart';
+import '../components/my_button.dart';
+import '../components/my_loading_dialog.dart';
+import '../components/my_square_tile.dart';
+import '../components/my_textfield.dart';
+import '../services/auth_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
@@ -17,6 +18,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void forgotPassword() {
+    print('FORGOT PASSWORD');
+  }
 
   void signUserIn() async {
     showLoadingDialog(context);
@@ -55,19 +60,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300],
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Center(
-              child: SizedBox(
-                width: 400,
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      backgroundColor: Colors.grey[300],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: SizedBox(
+              width: 400,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   const SizedBox(height: 50),
                   // logo
                   const Icon(Icons.lock, size: 100),
                   const SizedBox(height: 50),
                   // welcome
-                  Text('Welcome back, you\'ve been missed!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+                  Text('Welcome back!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
                   const SizedBox(height: 25),
                   //username
                   MyTextField(controller: emailController, hintText: 'Username', obscureText: false),
@@ -81,7 +88,14 @@ class _LoginPageState extends State<LoginPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text('Forgot Password?', style: TextStyle(color: Colors.grey[600])),
+
+                        GestureDetector(
+                          onTap: forgotPassword,
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(color: Colors.grey[600]),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -102,8 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.grey[400],
                         )),
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text('Or continue with:', style: TextStyle(color: Colors.grey[700]))),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            'Or continue with:',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                        ),
                         Expanded(
                             child: Divider(
                           thickness: 0.5,
@@ -120,22 +138,31 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 20),
                     MySquareTile(
                       imagePath: 'lib/images/apple.png',
-                      onTap: () => print('APPLE'),
+                      onTap: () => print(widget),
                     ),
                   ]),
                   const SizedBox(height: 50),
                   // not registered? register now
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('Not registered?', style: TextStyle(color: Colors.grey[700])),
-                    const SizedBox(width: 4),
-                    GestureDetector(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Not registered?', style: TextStyle(color: Colors.grey[700])),
+                      const SizedBox(width: 4),
+                      GestureDetector(
                         onTap: widget.toggleLoginRegister,
-                        child: const Text('Create an account.', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)))
-                  ])
-                ]),
+                        child: const Text(
+                          'Create an account.',
+                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
