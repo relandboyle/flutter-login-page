@@ -134,10 +134,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     onTap: () => AuthService().authenticateWithGoogle(),
                   ),
                   const SizedBox(width: 20),
-                  MySquareTile(
-                    imagePath: 'lib/images/apple.png',
-                    onTap: () => print(widget),
-                  ),
+                    MySquareTile(
+                      imagePath: 'lib/images/github.png',
+                      onTap: () => print(widget),
+                    ),
                 ]),
               ]),
             ),

@@ -7,19 +7,19 @@ class AuthService {
 
     GoogleSignInAccount? googleUser;
     try {
-      // begin interactive sign in process
+      // check whether platform is web or mobile
       if (kIsWeb == true) {
-        print('K IS WEB');
-        googleUser = await GoogleSignIn().signInSilently(suppressErrors: true);
+        // print('K IS WEB');
+        googleUser = await GoogleSignIn().signInSilently();
       } else {
-        print('K IS NOT WEB');
+        // print('K IS NOT WEB');
         googleUser = await GoogleSignIn().signIn();
       }
 
-      FirebaseAuth.instance.authStateChanges().listen((event) {
-        print('EVENT');
-        print(event?.displayName);
-      });
+      // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      //   print('EVENT');
+      //   print(user?.displayName);
+      // });
 
       // obtain auth details from request
       final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -44,5 +44,10 @@ class AuthService {
       print(e);
       print(kIsWeb);
     }
+  }
+
+  authenticateWithGutHub() async {
+    final authorizationEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/__/auth/handler');
+    final tokenEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/token');
   }
 }

@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(width: 20),
                     MySquareTile(
-                      imagePath: 'lib/images/apple.png',
+                      imagePath: 'lib/images/github.png',
                       onTap: () => print(widget),
                     ),
                   ]),
