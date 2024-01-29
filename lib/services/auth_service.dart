@@ -46,8 +46,8 @@ class AuthService {
     }
   }
 
-  authenticateWithGutHub() async {
-    final authorizationEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/__/auth/handler');
-    final tokenEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/token');
-  }
+  // authenticateWithGutHub() async {
+  //   final authorizationEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/__/auth/handler');
+  //   final tokenEndpoint = Uri.parse('https://heat-sync.firebaseapp.com/token');
+  // }
 }

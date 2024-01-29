@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'responsive/responsive_layout.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   final bool kIsWeb = const bool.fromEnvironment('dart.library.js_util');
 
@@ -14,14 +13,25 @@ class HomePage extends StatelessWidget {
       await FirebaseAuth.instance.signOut();
       await GoogleSignIn().disconnect();
     } else {
+      await FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ResponsiveLayout(),
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Logout:'),
+          IconButton(
+            onPressed: signUserOut,
+            icon: const Icon(Icons.logout),
+            color: Colors.lightBlue.shade900,
+          ),
+        ],
+      ),
     );
   }
 }
