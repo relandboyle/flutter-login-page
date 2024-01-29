@@ -138,6 +138,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       imagePath: 'lib/images/github.png',
                       onTap: () => print(widget),
                     ),
+                  const SizedBox(width: 20),
+                    MySquareTile(
+                      imagePath: 'lib/images/apple.png',
+                      onTap: () => print(widget),
+                    ),
                 ]),
               ]),
             ),

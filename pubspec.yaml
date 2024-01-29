@@ -37,9 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
+  fl_chart: ^0.66.1
   google_nav_bar: ^5.0.6
   google_sign_in: ^6.2.1
   google_sign_in_web: ^0.12.3+2
+  http: ^1.2.0
+  logger: ^2.0.2+1
   oauth2: ^2.0.2
 
 dev_dependencies:
