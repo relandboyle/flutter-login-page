@@ -40,6 +40,7 @@ class _WebBodyState extends State<WebBody> {
             child: ElevatedButton(
               onPressed: () => selectPage(0),
               style: ElevatedButton.styleFrom(
+                elevation: 0,
                 foregroundColor: Colors.grey.shade200,
                 backgroundColor: Colors.lightBlue.shade900,
                 shape: const RoundedRectangleBorder(
@@ -56,6 +57,7 @@ class _WebBodyState extends State<WebBody> {
             child: ElevatedButton(
               onPressed: () => selectPage(1),
               style: ElevatedButton.styleFrom(
+                elevation: 0,
                 foregroundColor: Colors.grey.shade200,
                 backgroundColor: Colors.lightBlue.shade900,
                 shape: const RoundedRectangleBorder(
@@ -72,6 +74,7 @@ class _WebBodyState extends State<WebBody> {
             child: ElevatedButton(
               onPressed: () => selectPage(2),
               style: ElevatedButton.styleFrom(
+                elevation: 0,
                 foregroundColor: Colors.grey.shade200,
                 backgroundColor: Colors.lightBlue.shade900,
                 shape: const RoundedRectangleBorder(
@@ -88,6 +91,7 @@ class _WebBodyState extends State<WebBody> {
             child: ElevatedButton(
               onPressed: () => selectPage(3),
               style: ElevatedButton.styleFrom(
+                elevation: 0,
                 foregroundColor: Colors.grey.shade200,
                 backgroundColor: Colors.lightBlue.shade900,
                 shape: const RoundedRectangleBorder(
