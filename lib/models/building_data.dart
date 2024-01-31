@@ -1,33 +1,33 @@
 class BuildingData {
   String id;
-  String city;
-  String country;
-  String postalCode;
-  String state;
-  String streetName;
   String streetNumber;
+  String streetName;
+  String city;
+  String state;
+  String postalCode;
+  String country;
   String fullAddress; // New field
 
   BuildingData({
     this.id = '',
-    this.city = '',
-    this.country = '',
-    this.postalCode = '',
-    this.state = '',
-    this.streetName = '',
     this.streetNumber = '',
+    this.streetName = '',
+    this.city = '',
+    this.state = '',
+    this.postalCode = '',
+    this.country = '',
     required this.fullAddress,
   });
 
   factory BuildingData.fromJson(Map<String, dynamic> json) {
     return BuildingData(
       id: json['id'] as String,
-      city: json['city'] as String,
-      country: json['country'] as String,
-      postalCode: json['postalCode'] as String,
-      state: json['state'] as String,
-      streetName: json['streetName'] as String,
       streetNumber: json['streetNumber'] as String,
+      streetName: json['streetName'] as String,
+      city: json['city'] as String,
+      state: json['state'] as String,
+      postalCode: json['postalCode'] as String,
+      country: json['country'] as String,
       fullAddress: json['fullAddress'] as String,
     );
   }
@@ -35,12 +35,12 @@ class BuildingData {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'city': city,
-      'country': country,
-      'postalCode': postalCode,
-      'state': state,
-      'streetName': streetName,
       'streetNumber': streetNumber,
+      'streetName': streetName,
+      'city': city,
+      'state': state,
+      'postalCode': postalCode,
+      'country': country,
       'fullAddress': fullAddress,
     };
   }

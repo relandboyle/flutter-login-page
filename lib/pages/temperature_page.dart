@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:login_page/components/building_autocomplete.dart';
+import 'package:login_page/components/unit_autocomplete.dart';
 import '../components/temperature_graph.dart';
 import '../models/building_data.dart';
+import '../models/unit_data.dart';
+
+final logger = Logger();
 
 class TemperaturePage extends StatefulWidget {
   const TemperaturePage({super.key});
@@ -14,10 +19,16 @@ class _TemperaturePageState extends State<TemperaturePage> {
   final buildingController = TextEditingController();
   final unitController = TextEditingController();
   var selectedBuilding = BuildingData(fullAddress: '');
+  var selectedUnit = UnitData(fullUnit: '');
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
     logger.i('Temperature/selectBuilding(): ${selectedBuilding.fullAddress}');
+  }
+
+  void selectUnit(UnitData unit) {
+    setState(() => selectedUnit = unit);
+    logger.i('Temperature/selectUnit(): ${selectedUnit.fullUnit}');
   }
 
   @override
@@ -37,7 +48,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                   children: [
                     BuildingAutocomplete(selectBuilding: selectBuilding),
                     const SizedBox(height: 25),
-                    BuildingAutocomplete(selectBuilding: selectBuilding),
+                    UnitAutocomplete(selectUnit: selectUnit),
                   ],
                 ),
               ),
