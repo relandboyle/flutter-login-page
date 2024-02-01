@@ -39,6 +39,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const TemperatureGraph(),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: SizedBox(
@@ -53,7 +54,6 @@ class _TemperaturePageState extends State<TemperaturePage> {
                 ),
               ),
             ),
-            const TemperatureGraph(),
           ],
         ),
       ),
