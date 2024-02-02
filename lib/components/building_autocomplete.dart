@@ -77,11 +77,18 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Autocomplete<BuildingData>(
-          fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+          fieldViewBuilder: (
+            BuildContext context,
+            TextEditingController controller,
+            FocusNode focusNode,
+            VoidCallback onFieldSubmitted,
+          ) {
             return TextFormField(
               decoration: InputDecoration(
                 label: const Text("Select a Building"),
-                border: const OutlineInputBorder(borderSide: BorderSide()),
+                border: const OutlineInputBorder(
+                  borderSide: BorderSide(),
+                ),
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),
               controller: controller,
@@ -104,7 +111,6 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
           },
           displayStringForOption: (option) => option.fullAddress,
           onSelected: (BuildingData selection) {
-            // debugdebugPrint('You just selected ${selection.fullAddress}');
             widget.selectBuilding(selection);
           },
         ),
@@ -123,8 +129,7 @@ class _FakeAPI {
       return const Iterable<BuildingData>.empty();
     }
 
-    final response = await http.post(
-        Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
+    final response = await http.post(Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
         // Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/building/searchBuildings'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
