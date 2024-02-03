@@ -16,19 +16,17 @@ class TemperaturePage extends StatefulWidget {
 }
 
 class _TemperaturePageState extends State<TemperaturePage> {
-  final buildingController = TextEditingController();
-  final unitController = TextEditingController();
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
-    logger.i('Temperature/selectBuilding(): ${selectedBuilding.fullAddress}');
+    logger.i('SELECTED BUILDING: ${selectedBuilding.fullAddress}');
   }
 
   void selectUnit(UnitData unit) {
     setState(() => selectedUnit = unit);
-    logger.i('Temperature/selectUnit(): ${selectedUnit.fullUnit}');
+    logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
   }
 
   @override
@@ -49,7 +47,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                   children: [
                     BuildingAutocomplete(selectBuilding: selectBuilding),
                     const SizedBox(height: 25),
-                    UnitAutocomplete(selectUnit: selectUnit),
+                    UnitAutocomplete(selectUnit: selectUnit, selectedBuildingId: selectedBuilding.id,),
                   ],
                 ),
               ),
