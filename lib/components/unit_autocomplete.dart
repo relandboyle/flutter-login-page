@@ -16,7 +16,8 @@ const Duration debounceDuration = Duration(milliseconds: 400);
 
 class UnitAutocomplete extends StatefulWidget {
   final Function selectUnit;
-  const UnitAutocomplete({super.key, required this.selectUnit});
+  final String selectedBuildingId;
+  const UnitAutocomplete({super.key, required this.selectUnit, required this.selectedBuildingId});
 
   @override
   State<UnitAutocomplete> createState() => UnitAutocompleteState();
@@ -40,13 +41,13 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
   // Calls the "remote" API to search with the given query. Returns null when
   // the call has been made obsolete.
   Future<Iterable<UnitData>?> _search(String query) async {
-    logger.i('Testing SEARCH in UnitAutocomplete: $query');
+    // logger.i('Testing SEARCH in UnitAutocomplete: $query');
 
     _currentQuery = query;
 
     late final Iterable<UnitData> options;
     try {
-      options = await _FakeAPI.search(this, _currentQuery!);
+      options = await _FakeAPI.search(this, _currentQuery!, widget.selectedBuildingId);
     } catch (error) {
       if (error is _NetworkException) {
         setState(() {
@@ -78,13 +79,19 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Autocomplete<UnitData>(
-          fieldViewBuilder: (BuildContext context, TextEditingController controller, FocusNode focusNode, VoidCallback onFieldSubmitted) {
+          fieldViewBuilder: (
+            BuildContext context,
+            TextEditingController controller,
+            FocusNode focusNode,
+            VoidCallback onFieldSubmitted,
+          ) {
             return TextFormField(
               decoration: InputDecoration(
                 label: const Text("Select a Unit"),
                 border: const OutlineInputBorder(borderSide: BorderSide()),
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),
+              enabled: widget.selectedBuildingId.isNotEmpty,
               controller: controller,
               focusNode: focusNode,
               onFieldSubmitted: (String value) {
@@ -119,18 +126,18 @@ class _FakeAPI {
   // List<UnitData> _kOptions = <UnitData>[];
 
   // Searches the options, but injects a fake "network" delay.
-  static Future<Iterable<UnitData>> search(UnitAutocompleteState state, String query) async {
+  static Future<Iterable<UnitData>> search(UnitAutocompleteState state, String query, String buildingId) async {
     if (query == '') {
       return const Iterable<UnitData>.empty();
     }
 
-    final response = await http.post(
-        Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
+    final response = await http.post(Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
         // Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/unit/searchUnits'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'buildingId': buildingId,
           'fullUnit': query,
         }));
 

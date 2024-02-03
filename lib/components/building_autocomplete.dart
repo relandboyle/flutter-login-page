@@ -39,7 +39,7 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
   // Calls the "remote" API to search with the given query. Returns null when
   // the call has been made obsolete.
   Future<Iterable<BuildingData>?> _search(String query) async {
-    logger.i('Testing SEARCH in BuildingAutocomplete: $query');
+    // logger.i('Testing SEARCH in BuildingAutocomplete: $query');
 
     _currentQuery = query;
 
@@ -93,9 +93,6 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
               ),
               controller: controller,
               focusNode: focusNode,
-              onFieldSubmitted: (String value) {
-                onFieldSubmitted();
-              },
             );
           },
           optionsBuilder: (TextEditingValue textEditingValue) async {
@@ -109,6 +106,7 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
             _lastOptions = options;
             return options;
           },
+
           displayStringForOption: (option) => option.fullAddress,
           onSelected: (BuildingData selection) {
             widget.selectBuilding(selection);
@@ -139,7 +137,7 @@ class _FakeAPI {
         }));
 
     Iterable res = json.decode(response.body);
-    logger.i('$res');
+    // logger.i('$res');
     state._kOptions = List<BuildingData>.from(res.map((model) => BuildingData.fromJson(model)));
 
     return state._kOptions.where((BuildingData option) {
