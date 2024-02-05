@@ -10,7 +10,7 @@ class TemperatureGraph extends StatefulWidget {
 
 class _TemperatureGraphState extends State<TemperatureGraph> {
   List<Color> gradientColors = [
-    Colors.cyan,
+    const Color.fromARGB(255, 39, 212, 0),
     Colors.blue,
   ];
 
@@ -38,18 +38,31 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           width: 60,
           height: 34,
           child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                showAvg ? Colors.red : Colors.green,
+              ),
+            ),
             onPressed: () {
               setState(() {
                 showAvg = !showAvg;
               });
             },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                fontSize: 12,
-                color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
-              ),
-            ),
+            child: showAvg
+                ? const Text(
+                    'avg',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Text(
+                    'main',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
           ),
         ),
       ],
@@ -63,6 +76,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     );
     Widget text;
     switch (value.toInt()) {
+      case 0:
+        text = const Text('JAN', style: style);
+        break;
       case 2:
         text = const Text('MAR', style: style);
         break;
@@ -71,6 +87,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         break;
       case 8:
         text = const Text('SEP', style: style);
+        break;
+      case 11:
+        text = const Text('DEC', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -162,7 +181,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       lineBarsData: [
         LineChartBarData(
           spots: const [
-            FlSpot(0, 3),
+            FlSpot(0, 4),
             FlSpot(2.6, 2),
             FlSpot(4.9, 5),
             FlSpot(6.8, 3.1),
@@ -182,9 +201,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: gradientColors
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
+              colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),
@@ -249,7 +266,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       lineBarsData: [
         LineChartBarData(
           spots: const [
-            FlSpot(0, 3.44),
+            FlSpot(0, 7),
             FlSpot(2.6, 3.44),
             FlSpot(4.9, 3.44),
             FlSpot(6.8, 3.44),
@@ -260,10 +277,8 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           isCurved: true,
           gradient: LinearGradient(
             colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
+              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
+              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
             ],
           ),
           barWidth: 5,
@@ -275,12 +290,8 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
             show: true,
             gradient: LinearGradient(
               colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
+                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
               ],
             ),
           ),
