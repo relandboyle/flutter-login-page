@@ -39,7 +39,7 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
   // Calls the "remote" API to search with the given query. Returns null when
   // the call has been made obsolete.
   Future<Iterable<BuildingData>?> _search(String query) async {
-    // logger.i('Testing SEARCH in BuildingAutocomplete: $query');
+    logger.i('Testing SEARCH in BuildingAutocomplete: $query');
 
     _currentQuery = query;
 
@@ -127,8 +127,9 @@ class _FakeAPI {
       return const Iterable<BuildingData>.empty();
     }
 
-    final response = await http.post(Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
-        // Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/building/searchBuildings'),
+    final response = await http.post(
+      // Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
+        Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/building/searchBuildings'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -137,7 +138,7 @@ class _FakeAPI {
         }));
 
     Iterable res = json.decode(response.body);
-    // logger.i('$res');
+    logger.i('$res');
     state._kOptions = List<BuildingData>.from(res.map((model) => BuildingData.fromJson(model)));
 
     return state._kOptions.where((BuildingData option) {
