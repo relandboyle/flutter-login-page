@@ -1,8 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:login_page/models/temperature_entry.dart';
+
+final logger = Logger();
 
 class TemperatureGraph extends StatefulWidget {
-  const TemperatureGraph({super.key});
+  TemperatureGraph({super.key, required this.temperatureEntries, this.spots = const []});
+
+  final Iterable<TemperatureEntry> temperatureEntries;
+  List<FlSpot> spots = <FlSpot>[];
+  List<FlSpot> outsideSpots = <FlSpot>[];
+
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -15,6 +24,44 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   ];
 
   bool showAvg = false;
+  bool swapSpots = false;
+
+  updateState() {
+    // setState(() => swapSpots = !swapSpots);
+    setState(() => widget.spots = widget.temperatureEntries
+            .map((entry) => FlSpot(
+                  DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
+                  double.parse((double.parse(entry.temperature) * (9/5) + 32).toStringAsFixed(2)),
+                ))
+            .toList());
+    logger.i(widget.spots);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    List<FlSpot> spots = widget.temperatureEntries.isEmpty
+        ? [
+            const FlSpot(0, 4),
+            const FlSpot(2.6, 2),
+            const FlSpot(4.9, 5),
+            const FlSpot(6.8, 3.1),
+            const FlSpot(8, 4),
+            const FlSpot(9.5, 3),
+            const FlSpot(11, 4),
+          ]
+        : widget.temperatureEntries
+            .map((entry) => FlSpot(
+                  DateTime.parse(entry.createdAt).millisecondsSinceEpoch.toDouble(),
+                  double.parse(entry.temperature),
+                ))
+            .toList();
+
+    setState(() {
+      spots = spots;
+      logger.i('SPOTS: $spots');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +82,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           ),
         ),
         SizedBox(
-          width: 60,
+          width: 100,
           height: 34,
           child: TextButton(
             style: ButtonStyle(
@@ -44,9 +91,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
               ),
             ),
             onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
+              updateState();
             },
             child: showAvg
                 ? const Text(
@@ -57,7 +102,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
                     ),
                   )
                 : const Text(
-                    'main',
+                    'setState()',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -110,13 +155,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '60F';
         break;
       case 3:
-        text = '30k';
+        text = '80F';
         break;
       case 5:
-        text = '50k';
+        text = '100F';
         break;
       default:
         return Container();
@@ -164,7 +209,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 20,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -174,21 +219,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
+      minX: 170.70894,
+      maxX: 170.71758,
+      minY: 80,
+      maxY: 86,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 4),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: widget.spots,
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,

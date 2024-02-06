@@ -14,7 +14,7 @@ class MobileBody extends StatefulWidget {
 
 class _MobileBodyState extends State<MobileBody> {
   int selectedIndex = 0;
-  
+
   static const List<Widget> displayPages = <Widget>[
     TemperaturePage(),
     BuildingsPage(),

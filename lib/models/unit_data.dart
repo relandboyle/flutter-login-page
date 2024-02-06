@@ -4,8 +4,7 @@ class UnitData {
   final String unitNumber;
   final String buildingId;
   final String channelId;
-  final String fullUnit; // New field
-
+  final String fullUnit;
   UnitData({
     this.unitId = '',
     this.tenantName = '',

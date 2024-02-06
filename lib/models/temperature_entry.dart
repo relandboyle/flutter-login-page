@@ -27,8 +27,8 @@ class TemperatureEntry {
     return TemperatureEntry(
       entryId: json["entryId"] as String,
       channelId: json["channelId"] as String,
-      serverTime: DateTime.parse(json["serverTime"]) as String,
-      createdAt: DateTime.parse(json["createdAt"]) as String,
+      serverTime: json["serverTime"],
+      createdAt: json["createdAt"],
       fieldOneLabel: json["fieldOneLabel"] as String,
       temperature: json["temperature"] as String,
       name: json["name"] as String,
@@ -36,5 +36,20 @@ class TemperatureEntry {
       longitude: json["longitude"] as String,
       outsideTemperature: json["outsideTemperature"] as String,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'entryId': entryId,
+      'channelId': channelId,
+      'serverTime': serverTime,
+      'createdAt': createdAt,
+      'fieldOneLabel': fieldOneLabel,
+      'temperature': temperature,
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude,
+      'outsideTemperature': outsideTemperature,
+    };
   }
 }
