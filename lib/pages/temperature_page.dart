@@ -36,7 +36,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
   void getTemperatureData() {
     // request sensor data from the server passing channelId, startTime, and endTime
-    getSensorData('73844', '2024-02-03T00:00:00Z', '2024-02-05T23:59:59Z');
+    getSensorData('73844', '2024-01-15T00:00:00Z', '2024-02-05T23:59:59Z');
   }
 
   Future<void> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
@@ -60,13 +60,6 @@ class _TemperaturePageState extends State<TemperaturePage> {
     Iterable res = json.decode(response.body);
     // logger.i('RESPONSE: $res');
     setState(() => temperatureEntries = res.map((entry) => TemperatureEntry.fromJson(entry)));
-    // List<FlSpot> spots = res
-    //     .map((entry) => FlSpot(
-    //           DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble(),
-    //           double.parse(entry.temperature),
-    //         ))
-    //     .toList();
-    // logger.i('SPOTS: $spots');
   }
 
   @override
@@ -98,9 +91,16 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       ),
                       const SizedBox(height: 25),
                       ElevatedButton(
-                          onPressed: selectedUnit.channelId.isEmpty ? getTemperatureData : null,
-                          style: ButtonStyle(
+                          onPressed: selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
+                          style: selectedUnit.channelId.isNotEmpty
+                          ? ButtonStyle(
+                            elevation: MaterialStateProperty.all(10),
                             backgroundColor: MaterialStateProperty.all(Colors.green),
+                            foregroundColor: MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                          )
+                          : ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.green.shade200),
                             foregroundColor: MaterialStateProperty.all(Colors.white),
                             padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
                           ),

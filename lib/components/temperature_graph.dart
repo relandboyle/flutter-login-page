@@ -219,10 +219,10 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 170.69,
-      maxX: 170.72,
-      minY: 70,
-      maxY: 90,
+      minX: 170.70894,
+      maxX: 170.71758,
+      minY: 80,
+      maxY: 86,
       lineBarsData: [
         LineChartBarData(
           spots: widget.spots,
