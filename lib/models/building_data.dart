@@ -6,7 +6,7 @@ class BuildingData {
   String state;
   String postalCode;
   String country;
-  String fullAddress; // New field
+  String fullAddress;
 
   BuildingData({
     this.id = '',

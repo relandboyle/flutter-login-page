@@ -1,8 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:login_page/models/temperature_entry.dart';
+
+final logger = Logger();
 
 class TemperatureGraph extends StatefulWidget {
-  const TemperatureGraph({super.key});
+  TemperatureGraph({super.key, required this.temperatureEntries, this.spots = const []});
+  final Iterable<TemperatureEntry> temperatureEntries;
+  List<FlSpot> spots = <FlSpot>[];
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -15,6 +21,68 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   ];
 
   bool showAvg = false;
+  bool swapSpots = false;
+
+  updateState() {
+    setState(() {
+      // showAvg = !showAvg;
+      swapSpots = !swapSpots;
+      widget.spots = swapSpots
+          ? [
+              const FlSpot(0, 4),
+              const FlSpot(2.6, 2),
+              const FlSpot(4.9, 5),
+              const FlSpot(6.8, 3.1),
+              const FlSpot(8, 4),
+              const FlSpot(9.5, 3),
+              const FlSpot(11, 4),
+            ]
+          // : [
+          //     const FlSpot(0, 4),
+          //     const FlSpot(9.5, 3),
+          //     const FlSpot(2.6, 2),
+          //     const FlSpot(4.9, 5),
+          //     const FlSpot(6.8, 3.1),
+          //     const FlSpot(11, 4),
+          //     const FlSpot(8, 4),
+          //   ];
+          : widget.temperatureEntries
+              .map((entry) => FlSpot(
+                    DateTime.parse(entry.createdAt).millisecondsSinceEpoch.toDouble(),
+                    double.parse(entry.temperature),
+                  ))
+              .toList();
+
+      logger.i(widget.spots);
+      logger.i(widget.temperatureEntries);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    List<FlSpot> spots = widget.temperatureEntries.isEmpty
+        ? [
+            const FlSpot(0, 4),
+            const FlSpot(2.6, 2),
+            const FlSpot(4.9, 5),
+            const FlSpot(6.8, 3.1),
+            const FlSpot(8, 4),
+            const FlSpot(9.5, 3),
+            const FlSpot(11, 4),
+          ]
+        : widget.temperatureEntries
+            .map((entry) => FlSpot(
+                  DateTime.parse(entry.createdAt).millisecondsSinceEpoch.toDouble(),
+                  double.parse(entry.temperature),
+                ))
+            .toList();
+
+    setState(() {
+      spots = spots;
+      logger.i('SPOTS: $spots');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +112,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
               ),
             ),
             onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
+              updateState();
             },
             child: showAvg
                 ? const Text(
@@ -180,15 +246,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 4),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: widget.spots,
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,
