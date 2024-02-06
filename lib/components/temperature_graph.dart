@@ -7,8 +7,11 @@ final logger = Logger();
 
 class TemperatureGraph extends StatefulWidget {
   TemperatureGraph({super.key, required this.temperatureEntries, this.spots = const []});
+
   final Iterable<TemperatureEntry> temperatureEntries;
   List<FlSpot> spots = <FlSpot>[];
+  List<FlSpot> outsideSpots = <FlSpot>[];
+
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -24,38 +27,14 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   bool swapSpots = false;
 
   updateState() {
-    setState(() {
-      // showAvg = !showAvg;
-      swapSpots = !swapSpots;
-      widget.spots = swapSpots
-          ? [
-              const FlSpot(0, 4),
-              const FlSpot(2.6, 2),
-              const FlSpot(4.9, 5),
-              const FlSpot(6.8, 3.1),
-              const FlSpot(8, 4),
-              const FlSpot(9.5, 3),
-              const FlSpot(11, 4),
-            ]
-          // : [
-          //     const FlSpot(0, 4),
-          //     const FlSpot(9.5, 3),
-          //     const FlSpot(2.6, 2),
-          //     const FlSpot(4.9, 5),
-          //     const FlSpot(6.8, 3.1),
-          //     const FlSpot(11, 4),
-          //     const FlSpot(8, 4),
-          //   ];
-          : widget.temperatureEntries
-              .map((entry) => FlSpot(
-                    DateTime.parse(entry.createdAt).millisecondsSinceEpoch.toDouble(),
-                    double.parse(entry.temperature),
-                  ))
-              .toList();
-
-      logger.i(widget.spots);
-      logger.i(widget.temperatureEntries);
-    });
+    // setState(() => swapSpots = !swapSpots);
+    setState(() => widget.spots = widget.temperatureEntries
+            .map((entry) => FlSpot(
+                  DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
+                  double.parse((double.parse(entry.temperature) * (9/5) + 32).toStringAsFixed(2)),
+                ))
+            .toList());
+    logger.i(widget.spots);
   }
 
   @override
@@ -103,7 +82,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           ),
         ),
         SizedBox(
-          width: 60,
+          width: 100,
           height: 34,
           child: TextButton(
             style: ButtonStyle(
@@ -123,7 +102,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
                     ),
                   )
                 : const Text(
-                    'main',
+                    'setState()',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
@@ -176,13 +155,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     String text;
     switch (value.toInt()) {
       case 1:
-        text = '10K';
+        text = '60F';
         break;
       case 3:
-        text = '30k';
+        text = '80F';
         break;
       case 5:
-        text = '50k';
+        text = '100F';
         break;
       default:
         return Container();
@@ -230,7 +209,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
+            interval: 20,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -240,10 +219,10 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
+      minX: 170.69,
+      maxX: 170.72,
+      minY: 70,
+      maxY: 90,
       lineBarsData: [
         LineChartBarData(
           spots: widget.spots,
