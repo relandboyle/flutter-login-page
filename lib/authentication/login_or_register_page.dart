@@ -20,14 +20,17 @@ class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (showLoginPage) {
-      return LoginPage(
-        toggleLoginRegister: toggleLoginRegister,
-      );
-    } else {
-      return RegisterPage(
-        toggleLoginRegister: toggleLoginRegister,
-      );
-    }
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      body: SingleChildScrollView(
+        child: showLoginPage
+            ? LoginPage(
+                toggleLoginRegister: toggleLoginRegister,
+              )
+            : RegisterPage(
+                toggleLoginRegister: toggleLoginRegister,
+              ),
+      ),
+    );
   }
 }
