@@ -3,6 +3,9 @@ import '../pages/buildings_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class WebBody extends StatefulWidget {
   const WebBody({super.key});
@@ -13,16 +16,6 @@ class WebBody extends StatefulWidget {
 
 class _WebBodyState extends State<WebBody> {
   int selectedIndex = 0;
-  bool isDarkMode = ThemeMode.system == ThemeMode.dark;
-  ThemeMode themeMode = ThemeMode.system;
-
-  void swapTheme(bool newValue) {
-    print('newValue: $newValue');
-    print('themeMode: $themeMode');
-    setState(() {
-      themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    });
-  }
 
   void selectPage(int index) {
     setState(() {
@@ -114,14 +107,11 @@ class _WebBodyState extends State<WebBody> {
             ),
           ),
           const SizedBox(width: 15),
-          Switch(
-            value: isDarkMode,
-            onChanged: (bool newValue) {
-              setState(() {
-                isDarkMode = newValue;
-                swapTheme(newValue);
-              });
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
+            icon: const Icon(Icons.home_filled),
           ),
           const SizedBox(width: 15),
         ],
