@@ -135,13 +135,13 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           style: !selectedUnit.channelId.isNotEmpty
                               ? ButtonStyle(
                                   elevation: MaterialStateProperty.all(10),
-                                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
                                   padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
                                 )
                               : ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.green.shade200),
-                                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
                                   padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
                                 ),
                           child: const Text('Get Temperature Data')),
