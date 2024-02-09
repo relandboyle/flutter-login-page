@@ -22,7 +22,6 @@ class TemperaturePage extends StatefulWidget {
 }
 
 class _TemperaturePageState extends State<TemperaturePage> {
-
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
@@ -105,8 +104,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                 children: [
                   Text("Please select a date range:"),
                   SizedBox(width: 30),
-                  DatePicker(
-                  ),
+                  DatePicker(),
                 ],
               ),
               TemperatureGraph(
@@ -131,20 +129,39 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       ),
                       const SizedBox(height: 25),
                       ElevatedButton(
-                          onPressed: !selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
-                          style: !selectedUnit.channelId.isNotEmpty
-                              ? ButtonStyle(
-                                  elevation: MaterialStateProperty.all(10),
-                                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
-                                )
-                              : ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.green.shade200),
-                                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                                  padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                        onPressed: !selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
+                        style: selectedUnit.channelId.isNotEmpty
+                            ? ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
                                 ),
-                          child: const Text('Get Temperature Data')),
+                                elevation: MaterialStateProperty.all(10),
+                                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
+                                foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(15),
+                                ),
+                              )
+                            : ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inverseSurface),
+                                foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(15),
+                                ),
+                              ),
+                        child: const Text('Get Temperature Data'),
+                      ),
                     ],
                   ),
                 ),

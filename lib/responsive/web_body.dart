@@ -32,9 +32,16 @@ class _WebBodyState extends State<WebBody> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(
+      color: Theme.of(context).colorScheme.onTertiaryContainer,
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HeatSync'),
+        title: Text(
+          'HeatSync',
+          style: textStyle,
+        ),
         foregroundColor: Theme.of(context).colorScheme.primary,
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
@@ -52,7 +59,10 @@ class _WebBodyState extends State<WebBody> {
                   ),
                 ),
               ),
-              child: const Text('Temperature'),
+              child: Text(
+                'Temperature',
+                style: textStyle,
+              ),
             ),
           ),
           SizedBox(
@@ -69,7 +79,10 @@ class _WebBodyState extends State<WebBody> {
                   ),
                 ),
               ),
-              child: const Text('Buildings'),
+              child: Text(
+                'Buildings',
+                style: textStyle,
+              ),
             ),
           ),
           SizedBox(
@@ -86,7 +99,10 @@ class _WebBodyState extends State<WebBody> {
                   ),
                 ),
               ),
-              child: const Text('Units'),
+              child: Text(
+                'Units',
+                style: textStyle,
+              ),
             ),
           ),
           SizedBox(
@@ -103,7 +119,10 @@ class _WebBodyState extends State<WebBody> {
                   ),
                 ),
               ),
-              child: const Text('Profile'),
+              child: Text(
+                'Profile',
+                style: textStyle,
+              ),
             ),
           ),
           const SizedBox(width: 15),
@@ -111,7 +130,15 @@ class _WebBodyState extends State<WebBody> {
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
-            icon: const Icon(Icons.home_filled),
+            icon: Theme.of(context).brightness == Brightness.light
+                ? const Icon(
+                    Icons.nightlight_round,
+                  )
+                : const Icon(
+                    Icons.wb_sunny_rounded,
+                  ),
+            hoverColor: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
           const SizedBox(width: 15),
         ],
