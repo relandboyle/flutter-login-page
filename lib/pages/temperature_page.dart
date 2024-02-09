@@ -102,7 +102,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Please select a date range:"),
+                  Text("Select date range:"),
                   SizedBox(width: 30),
                   DatePicker(),
                 ],
@@ -166,6 +166,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),
