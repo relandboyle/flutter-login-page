@@ -137,7 +137,7 @@ class _WebBodyState extends State<WebBody> {
                 : const Icon(
                     Icons.wb_sunny_rounded,
                   ),
-            highlightColor: Theme.of(context).colorScheme.primary,
+            hoverColor: Theme.of(context).colorScheme.secondary,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
           const SizedBox(width: 15),

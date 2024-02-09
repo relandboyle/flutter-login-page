@@ -33,7 +33,7 @@ TextTheme textTheme = TextTheme(
     fontStyle: FontStyle.normal,
   ),
   bodyMedium: GoogleFonts.openSans(
-    fontSize: 20,
+    fontSize: 14,
   ),
   displaySmall: GoogleFonts.pacifico(),
 );
