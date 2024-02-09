@@ -22,10 +22,11 @@ class TemperaturePage extends StatefulWidget {
 }
 
 class _TemperaturePageState extends State<TemperaturePage> {
+
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  late List<FlSpot> spots = [];
+  late List<FlSpot> spots = <FlSpot>[const FlSpot(170.70894, 20), const FlSpot(170.71758, 20)];
   late List<FlSpot> outsideSpots = [const FlSpot(0, 0)];
   bool swapSpots = false;
 
@@ -94,7 +95,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 600,
+        width: 800,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

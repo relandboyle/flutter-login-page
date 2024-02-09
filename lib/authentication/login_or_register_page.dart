@@ -21,7 +21,7 @@ class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       body: SingleChildScrollView(
         child: showLoginPage
             ? LoginPage(
