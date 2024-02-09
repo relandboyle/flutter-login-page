@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 import '../pages/buildings_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
+import '../theme/theme_provider.dart';
 
 class MobileBody extends StatefulWidget {
   const MobileBody({super.key});
@@ -25,8 +27,24 @@ class _MobileBodyState extends State<MobileBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+      floatingActionButton: FloatingActionButton(
+        elevation: 10,
+        highlightElevation: 10,
+        onPressed: () {
+          Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+        },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Theme.of(context).brightness == Brightness.light
+            ? const Icon(
+                Icons.nightlight_round,
+              )
+            : const Icon(
+                Icons.wb_sunny_rounded,
+              ),
+      ),
       bottomNavigationBar: Container(
-        color: Colors.lightBlue.shade900,
+        color: Theme.of(context).colorScheme.primary,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
           child: GNav(
@@ -37,10 +55,10 @@ class _MobileBodyState extends State<MobileBody> {
               });
             },
             padding: const EdgeInsets.all(16),
-            activeColor: Colors.lightBlue.shade900,
-            backgroundColor: Colors.lightBlue.shade900,
-            color: Colors.grey.shade300,
-            tabBackgroundColor: Colors.grey.shade300,
+            activeColor: Theme.of(context).colorScheme.onPrimary,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            color: Theme.of(context).colorScheme.secondary,
+            tabBackgroundColor: Theme.of(context).colorScheme.secondaryContainer,
             gap: 8,
             tabs: const [
               GButton(
