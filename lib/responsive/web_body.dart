@@ -3,6 +3,9 @@ import '../pages/buildings_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class WebBody extends StatefulWidget {
   const WebBody({super.key});
@@ -32,8 +35,8 @@ class _WebBodyState extends State<WebBody> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('HeatSync'),
-        backgroundColor: Colors.lightBlue.shade900,
-        foregroundColor: Colors.grey.shade200,
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         actions: [
           SizedBox(
             height: double.infinity,
@@ -41,8 +44,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(0),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Colors.grey.shade200,
-                backgroundColor: Colors.lightBlue.shade900,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -58,8 +61,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(1),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Colors.grey.shade200,
-                backgroundColor: Colors.lightBlue.shade900,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -75,8 +78,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(2),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Colors.grey.shade200,
-                backgroundColor: Colors.lightBlue.shade900,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -92,8 +95,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(3),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Colors.grey.shade200,
-                backgroundColor: Colors.lightBlue.shade900,
+                foregroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -102,6 +105,13 @@ class _WebBodyState extends State<WebBody> {
               ),
               child: const Text('Profile'),
             ),
+          ),
+          const SizedBox(width: 15),
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+            icon: const Icon(Icons.home_filled),
           ),
           const SizedBox(width: 15),
         ],
