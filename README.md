@@ -1,16 +1,16 @@
-# login_page
+# HeatSync
+### Stay warm.
 
-A new Flutter project.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ffaccc36-3c6d-4fc1-8c0b-54dbcfc71b69/deploy-status)](https://app.netlify.com/sites/heat-sync/deploys)
 
-## Getting Started
+<a href="https://heat-sync.net/" target="_blank">HeatSync</a>
 
-This project is a starting point for a Flutter application.
+This application is a web client designed to interface with the HeatSync server.
 
-A few resources to get you started if this is your first Flutter project:
+The server collects time-series temperature data from IoT-enabled sensors placed in rent-stabilized apartment units throughout New York City.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+It is unfortunately quite common for NYC landlords to deprive their tenants of heat and hot water during the colder months of the year. While tenants may report the condition, the behavior typically goes unpunished. City inspectors arrive on the scene days or weeks after a complaint is lodged, and if they cannot observe a hazardous condition then no violation can be issued.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+HeatSync empowers tenants, tenants' associations, and their legal representatives to collect accurate, complete temperature data for any number of units. Reports and charts my be viewed in real-time or exported for use in a legal setting.
+
+The HeatSync client is a Flutter Material application, deployed and hosted at <a href="https://netlify.com" target="_blank">Netlify.com</a>. It makes use of the fl_charts, google_fonts, firebase_auth, and provider packages among others.
