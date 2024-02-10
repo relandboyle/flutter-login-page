@@ -18,7 +18,7 @@ class TemperatureGraph extends StatefulWidget {
 
 class _TemperatureGraphState extends State<TemperatureGraph> {
   List<Color> insideGradient = [
-    Colors.blueGrey.shade700,
+    Colors.green.shade300,
     Colors.blue.shade300,
   ];
   List<Color> outsideGradient = [

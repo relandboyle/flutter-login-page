@@ -27,8 +27,8 @@ ThemeData darkTheme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme.dark(
     brightness: Brightness.dark,
-    primary: Color.fromRGBO(35, 98, 158, 0.761),
-    onPrimary: Color.fromRGBO(80, 122, 161, 63),
+    primary: Color.fromRGBO(27, 71, 111, 1),
+    onPrimary: Color.fromRGBO(116, 177, 233, 0.757),
     primaryContainer: Color.fromRGBO(12, 34, 54, 21),
     onPrimaryContainer: Color.fromRGBO(21, 60, 97, 38),
     inversePrimary: Color.fromRGBO(80, 122, 161, 63),

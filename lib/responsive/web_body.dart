@@ -33,7 +33,7 @@ class _WebBodyState extends State<WebBody> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(
-      color: Theme.of(context).colorScheme.onPrimaryContainer,
+      color: Theme.of(context).colorScheme.onPrimary,
     );
     final Color foregroundColor = Theme.of(context).colorScheme.onPrimaryContainer;
     final Color backgroundColor = Theme.of(context).colorScheme.primary;

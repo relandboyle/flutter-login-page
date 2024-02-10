@@ -32,9 +32,10 @@ class DateTimePicker extends StatelessWidget {
         );
       },
       style: OutlinedButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         side: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
           width: 2,
         ),
         shape: RoundedRectangleBorder(
@@ -44,7 +45,7 @@ class DateTimePicker extends StatelessWidget {
       child: Text(
         currentDate.toString().substring(0, 10),
         style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
           fontSize: 16,
         ),
       ),

@@ -10,7 +10,7 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > 480) {
+        if (constraints.maxWidth > 700) {
           return const WebBody();
         } else {
           return const MobileBody();

@@ -25,8 +25,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  List<FlSpot> spots = [const FlSpot(0, 20)];
   List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
+  List<FlSpot> spots = [const FlSpot(0, 20)];
   bool swapSpots = false;
   DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
   DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
@@ -117,10 +117,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
               children: [
                 const SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Card(
                     color: Theme.of(context).colorScheme.primary,
-                    elevation: 4,
+                    elevation: 10,
                     child: TemperatureGraph(
                       spots: spots,
                       outsideSpots: outsideSpots,
@@ -180,9 +180,9 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       ),
                                     ),
                                   ),
-                                  elevation: MaterialStateProperty.all(10),
+                                  elevation: MaterialStateProperty.all(5),
                                   backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimaryContainer),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),
@@ -195,8 +195,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       ),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inverseSurface),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),

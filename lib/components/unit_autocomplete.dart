@@ -88,7 +88,12 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
             return TextFormField(
               decoration: InputDecoration(
                 label: const Text("Select a Unit"),
-                border: const OutlineInputBorder(borderSide: BorderSide()),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                ),
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),
               enabled: widget.selectedBuildingId.isNotEmpty,
@@ -99,6 +104,28 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
               },
             );
           },
+          optionsViewBuilder: (context, onSelected, options) => Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 4,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 350,
+                ),
+                child: ListView(
+                  children: options
+                      .map((UnitData option) => ListTile(
+                            title: Text(option.fullUnit),
+                            onTap: () {
+                              onSelected(option);
+                            },
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
           optionsBuilder: (TextEditingValue textEditingValue) async {
             setState(() {
               _networkError = false;
