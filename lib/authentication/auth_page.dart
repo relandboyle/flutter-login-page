@@ -11,7 +11,6 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +18,12 @@ class _AuthPageState extends State<AuthPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // print(snapshot);
-            // print(snapshot.hasData);
+            // logger.i(snapshot);
+            // logger.i(snapshot.hasData);
             return const HomePage();
           } else {
-            // print(snapshot);
-            // print(snapshot.hasData);
+            // logger.i(snapshot);
+            // logger.i(snapshot.hasData);
             return const LoginOrRegisterPage();
           }
         },

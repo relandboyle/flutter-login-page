@@ -2,8 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:login_page/components/building_autocomplete.dart';
+import 'package:login_page/components/datetime_picker.dart';
 import 'package:login_page/components/unit_autocomplete.dart';
-import '../components/date_picker.dart';
 import '../components/temperature_graph.dart';
 import '../models/building_data.dart';
 import '../models/temperature_entry.dart';
@@ -25,9 +25,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  late List<FlSpot> spots = <FlSpot>[const FlSpot(170.70894, 20), const FlSpot(170.71758, 20)];
-  late List<FlSpot> outsideSpots = [const FlSpot(0, 0)];
+  List<FlSpot> spots = [const FlSpot(0, 20)];
+  List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
   bool swapSpots = false;
+  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
+  DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
+
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
@@ -39,10 +42,20 @@ class _TemperaturePageState extends State<TemperaturePage> {
     logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
   }
 
+  void getStartDate(DateTime date) {
+    setState(() => startDate = date);
+    logger.i('START DATE: $startDate');
+  }
+
+  void getEndDate(DateTime date) {
+    setState(() => endDate = DateTime(date.year, date.month, date.day, 23, 59, 59));
+    logger.i('END DATE: $endDate');
+  }
+
   // TODO: move this to sensor_service.dart
   void getTemperatureData() async {
     // request sensor data from the server passing channelId, startTime, and endTime
-    await getSensorData('73844', '2024-01-15T00:00:00Z', '2024-02-05T23:59:59Z');
+    await getSensorData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
     spots = temperatureEntries
         .map((entry) => FlSpot(
               DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
@@ -68,6 +81,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
   // TODO: move this to sensor_service.dart
   Future<void> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
+    logger.i('QUERY PARAMS: $channelId, $dateRangeStart, $dateRangeEnd');
+
     final response = await http
         .post(
             // Uri.parse("http://localhost:8089/api/v1/sensor/filteredSensorData"),
@@ -96,6 +111,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
       child: SizedBox(
         width: 800,
         child: SingleChildScrollView(
+<<<<<<< Updated upstream
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -136,6 +152,76 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                   const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(5),
+=======
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    elevation: 4,
+                    child: TemperatureGraph(
+                      spots: spots,
+                      outsideSpots: outsideSpots,
+                      swapSpots: swapSpots,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SizedBox(
+                    width: 350,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            DateTimePicker(
+                              buttonText: 'Start Date',
+                              currentDate: startDate,
+                              updateDate: getStartDate,
+                            ),
+                            Text(
+                              ' - ',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
+                            DateTimePicker(
+                              buttonText: 'End Date',
+                              currentDate: endDate,
+                              updateDate: getEndDate,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 25),
+                        BuildingAutocomplete(
+                          selectBuilding: selectBuilding,
+                        ),
+                        const SizedBox(height: 25),
+                        UnitAutocomplete(
+                          selectUnit: selectUnit,
+                          selectedBuildingId: selectedBuilding.id,
+                        ),
+                        const SizedBox(height: 25),
+                        ElevatedButton(
+                          onPressed: selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
+                          style: selectedUnit.channelId.isNotEmpty
+                              ? ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
+>>>>>>> Stashed changes
                                     ),
                                   ),
                                 ),

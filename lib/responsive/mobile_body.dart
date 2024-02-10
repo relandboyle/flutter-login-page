@@ -46,7 +46,7 @@ class _MobileBodyState extends State<MobileBody> {
       bottomNavigationBar: Container(
         color: Theme.of(context).colorScheme.primary,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 14.0),
           child: GNav(
             selectedIndex: selectedIndex,
             onTabChange: (index) {

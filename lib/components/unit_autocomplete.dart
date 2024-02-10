@@ -112,7 +112,7 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
           },
           displayStringForOption: (option) => option.fullUnit,
           onSelected: (UnitData selection) {
-            // debugdebugPrint('You just selected ${selection.fullAddress}');
+            // debugdebuglogger.i('You just selected ${selection.fullAddress}');
             widget.selectUnit(selection);
           },
         ),
@@ -132,7 +132,7 @@ class _FakeAPI {
     }
 
     final response = await http.post(
-      // Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
+        // Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
         Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/unit/searchUnits'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

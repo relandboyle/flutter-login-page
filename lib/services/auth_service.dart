@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
+
+Logger logger = Logger();
 
 class AuthService {
   authenticateWithGoogle() async {
@@ -9,40 +12,40 @@ class AuthService {
     try {
       // check whether platform is web or mobile
       if (kIsWeb == true) {
-        // print('K IS WEB');
+        // logger.i('K IS WEB');
         googleUser = await GoogleSignIn().signInSilently();
       } else {
-        // print('K IS NOT WEB');
+        // logger.i('K IS NOT WEB');
         googleUser = await GoogleSignIn().signIn();
       }
 
       // FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      //   print('EVENT');
-      //   print(user?.displayName);
+      //   logger.i('EVENT');
+      //   logger.i(user?.displayName);
       // });
 
       // obtain auth details from request
       final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
-      // print('GOOGLE AUTH');
-      // print(googleAuth.idToken.toString());
+      // logger.i('GOOGLE AUTH');
+      // logger.i(googleAuth.idToken.toString());
 
       // create a new credential for user
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      // print('CREDENTIAL');
-      // print(credential.token);
-      // print(credential.idToken);
-      // print(credential.accessToken);
+      // logger.i('CREDENTIAL');
+      // logger.i(credential.token);
+      // logger.i(credential.idToken);
+      // logger.i(credential.accessToken);
 
       // sign in
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       // handle error
-      print('ERROR');
-      print(e);
-      print(kIsWeb);
+      logger.i('ERROR');
+      logger.i(e);
+      logger.i(kIsWeb);
     }
   }
 

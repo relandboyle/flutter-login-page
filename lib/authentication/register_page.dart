@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import '../components/my_button.dart';
 import '../components/my_loading_dialog.dart';
 import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
+
+Logger logger = Logger();
 
 class RegisterPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
@@ -69,7 +72,11 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               const SizedBox(height: 50),
               // logo
-              const Icon(Icons.lock, size: 48),
+              Icon(
+                Icons.lock,
+                size: 48,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               const SizedBox(height: 41),
               // welcome
               Text('Please create an account!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
@@ -100,9 +107,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(width: 4),
                 GestureDetector(
                   onTap: widget.toggleLoginRegister,
-                  child: const Text(
+                  child: Text(
                     'Sign in.',
-                    style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
                   ),
                 )
               ]),
@@ -137,12 +144,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(width: 20),
                   MySquareTile(
                     imagePath: 'lib/images/github.png',
-                    onTap: () => print(widget),
+                    onTap: () => logger.i(widget),
                   ),
                   const SizedBox(width: 20),
                   MySquareTile(
                     imagePath: 'lib/images/apple.png',
-                    onTap: () => print(widget),
+                    onTap: () => logger.i(widget),
                   ),
                 ],
               ),

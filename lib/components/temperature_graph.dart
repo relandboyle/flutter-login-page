@@ -4,11 +4,12 @@ import 'package:logger/logger.dart';
 
 final logger = Logger();
 
+// ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
   TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.swapSpots});
 
-  List<FlSpot> spots = const [];
-  List<FlSpot> outsideSpots = [];
+  List<FlSpot> spots;
+  List<FlSpot> outsideSpots;
   bool swapSpots = false;
 
   @override
@@ -16,9 +17,13 @@ class TemperatureGraph extends StatefulWidget {
 }
 
 class _TemperatureGraphState extends State<TemperatureGraph> {
-  List<Color> gradientColors = [
-    const Color.fromARGB(255, 39, 212, 0),
-    Colors.blue,
+  List<Color> insideGradient = [
+    Colors.blueGrey.shade700,
+    Colors.blue.shade300,
+  ];
+  List<Color> outsideGradient = [
+    Colors.deepOrange.shade700,
+    Colors.deepPurple.shade700,
   ];
 
   bool showAvg = false;
@@ -37,8 +42,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
               bottom: 12,
             ),
             child: LineChart(
-              showAvg ? avgData() : mainData(),
-              duration: const Duration(milliseconds: 500),
+              chartData(),
+              duration: const Duration(milliseconds: 800),
+              chartRendererKey: const Key('linechart'),
             ),
           ),
         ),
@@ -108,7 +114,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData mainData() {
+  LineChartData chartData() {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -117,13 +123,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         verticalInterval: 0.0005,
         getDrawingHorizontalLine: (value) {
           return const FlLine(
-            color: Colors.red,
+            color: Color.fromARGB(123, 54, 174, 244),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return const FlLine(
-            color: Colors.orange,
+            color: Color.fromARGB(130, 21, 0, 255),
             strokeWidth: 1,
           );
         },
@@ -155,10 +161,10 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: Theme.of(context).colorScheme.secondary),
       ),
-      minX: 170.70894,
-      maxX: 170.71758,
+      minX: widget.spots.first.x,
+      maxX: widget.spots.last.x,
       minY: 20,
       maxY: 100,
       lineBarsData: [
@@ -166,7 +172,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           spots: widget.spots,
           isCurved: true,
           gradient: LinearGradient(
-            colors: gradientColors,
+            colors: insideGradient,
           ),
           barWidth: 5,
           isStrokeCapRound: true,
@@ -176,7 +182,30 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+              begin: const Alignment(-1.0, 0.0),
+              end: const Alignment(1.0, 0.0),
+              colors: insideGradient.map((color) => color.withOpacity(0.3)).toList(),
+            ),
+          ),
+        ),
+        LineChartBarData(
+          // curveSmoothness: 1.5,
+          spots: widget.outsideSpots,
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: outsideGradient,
+          ),
+          barWidth: 5,
+          isStrokeCapRound: false,
+          dotData: const FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              begin: const Alignment(-1.0, 0.0),
+              end: const Alignment(1.0, 0.0),
+              colors: outsideGradient.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),
@@ -184,94 +213,86 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     );
   }
 
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: const LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: bottomTitleWidgets,
-            interval: 1,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 7),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-            ],
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // LineChartData outsideData() {
+  //   return LineChartData(
+  //     lineTouchData: const LineTouchData(enabled: false),
+  //     gridData: FlGridData(
+  //       show: false,
+  //       drawHorizontalLine: false,
+  //       verticalInterval: 1,
+  //       horizontalInterval: 1,
+  //       getDrawingVerticalLine: (value) {
+  //         return const FlLine(
+  //           color: Color.fromARGB(255, 23, 122, 204),
+  //           strokeWidth: 1,
+  //         );
+  //       },
+  //       getDrawingHorizontalLine: (value) {
+  //         return const FlLine(
+  //           color: Color(0xff37434d),
+  //           strokeWidth: 1,
+  //         );
+  //       },
+  //     ),
+  //     titlesData: FlTitlesData(
+  //       show: false,
+  //       bottomTitles: AxisTitles(
+  //         sideTitles: SideTitles(
+  //           showTitles: true,
+  //           reservedSize: 30,
+  //           getTitlesWidget: bottomTitleWidgets,
+  //           interval: 1,
+  //         ),
+  //       ),
+  //       leftTitles: AxisTitles(
+  //         sideTitles: SideTitles(
+  //           showTitles: false,
+  //           getTitlesWidget: leftTitleWidgets,
+  //           reservedSize: 42,
+  //           interval: 1,
+  //         ),
+  //       ),
+  //       topTitles: const AxisTitles(
+  //         sideTitles: SideTitles(showTitles: false),
+  //       ),
+  //       rightTitles: const AxisTitles(
+  //         sideTitles: SideTitles(showTitles: false),
+  //       ),
+  //     ),
+  //     borderData: FlBorderData(
+  //       show: false,
+  //       border: Border.all(color: const Color(0xff37434d)),
+  //     ),
+  //     minX: widget.outsideSpots.first.x,
+  //     maxX: widget.outsideSpots.last.x,
+  //     minY: 20,
+  //     maxY: 100,
+  //     lineBarsData: [
+  //       LineChartBarData(
+  //         spots: widget.outsideSpots,
+  //         isCurved: true,
+  //         gradient: const LinearGradient(
+  //           colors: [
+  //             Colors.red,
+  //             Colors.orange,
+  //           ],
+  //         ),
+  //         barWidth: 20,
+  //         isStrokeCapRound: true,
+  //         dotData: const FlDotData(
+  //           show: false,
+  //         ),
+  //         belowBarData: BarAreaData(
+  //           show: true,
+  //           gradient: LinearGradient(
+  //             colors: [
+  //               ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
+  //               ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

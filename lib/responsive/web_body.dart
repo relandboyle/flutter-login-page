@@ -33,7 +33,7 @@ class _WebBodyState extends State<WebBody> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(
-      color: Theme.of(context).colorScheme.onTertiaryContainer,
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
     );
 
     return Scaffold(
