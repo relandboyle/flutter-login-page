@@ -96,78 +96,82 @@ class _TemperaturePageState extends State<TemperaturePage> {
       child: SizedBox(
         width: 800,
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Select date range:"),
-                  SizedBox(width: 30),
-                  DatePicker(),
-                ],
-              ),
-              TemperatureGraph(
-                spots: spots,
-                outsideSpots: outsideSpots,
-                swapSpots: swapSpots,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                  width: 350,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      BuildingAutocomplete(
-                        selectBuilding: selectBuilding,
-                      ),
-                      const SizedBox(height: 25),
-                      UnitAutocomplete(
-                        selectUnit: selectUnit,
-                        selectedBuildingId: selectedBuilding.id,
-                      ),
-                      const SizedBox(height: 25),
-                      ElevatedButton(
-                        onPressed: !selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
-                        style: selectedUnit.channelId.isNotEmpty
-                            ? ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Select date range:"),
+                    SizedBox(width: 30),
+                    DatePicker(),
+                  ],
+                ),
+                TemperatureGraph(
+                  spots: spots,
+                  outsideSpots: outsideSpots,
+                  swapSpots: swapSpots,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SizedBox(
+                    width: 350,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        BuildingAutocomplete(
+                          selectBuilding: selectBuilding,
+                        ),
+                        const SizedBox(height: 25),
+                        UnitAutocomplete(
+                          selectUnit: selectUnit,
+                          selectedBuildingId: selectedBuilding.id,
+                        ),
+                        const SizedBox(height: 25),
+                        ElevatedButton(
+                          onPressed: !selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
+                          style: selectedUnit.channelId.isNotEmpty
+                              ? ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                elevation: MaterialStateProperty.all(10),
-                                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                                foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
-                                padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(15),
-                                ),
-                              )
-                            : ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5),
+                                  elevation: MaterialStateProperty.all(10),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                                  padding: MaterialStateProperty.all(
+                                    const EdgeInsets.all(15),
+                                  ),
+                                )
+                              : ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(5),
+                                      ),
                                     ),
                                   ),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inverseSurface),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                                  padding: MaterialStateProperty.all(
+                                    const EdgeInsets.all(15),
+                                  ),
                                 ),
-                                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inverseSurface),
-                                foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
-                                padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(15),
-                                ),
-                              ),
-                        child: const Text('Get Temperature Data'),
-                      ),
-                    ],
+                          child: const Text('Get Temperature Data'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 50),
-            ],
+                const SizedBox(height: 50),
+              ],
+            ),
           ),
         ),
       ),
