@@ -61,7 +61,7 @@ class _MobileBodyState extends State<MobileBody> {
             activeColor: Theme.of(context).colorScheme.primary,
             backgroundColor: Theme.of(context).colorScheme.primary,
             color: Theme.of(context).colorScheme.onPrimary,
-            tabBackgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            tabBackgroundColor: Theme.of(context).colorScheme.onPrimary,
             gap: 8,
             tabs: const [
               GButton(

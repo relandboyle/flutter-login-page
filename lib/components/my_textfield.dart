@@ -16,12 +16,15 @@ class MyTextField extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer, width: .0),
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSecondary, width: 2),
           ),
-          fillColor: Theme.of(context).colorScheme.primary,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+          ),
+          fillColor: Theme.of(context).colorScheme.background,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(

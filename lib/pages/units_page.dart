@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../components/my_textfield.dart';
 
 class UnitsPage extends StatelessWidget {
@@ -55,8 +54,8 @@ class UnitsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),
@@ -75,8 +74,8 @@ class UnitsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),
@@ -95,8 +94,8 @@ class UnitsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),

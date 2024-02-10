@@ -2,8 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:login_page/components/building_autocomplete.dart';
-import 'package:login_page/components/datetime_picker.dart';
+import 'package:login_page/components/date_picker.dart';
 import 'package:login_page/components/unit_autocomplete.dart';
+import 'package:intl/intl.dart';
 import '../components/temperature_graph.dart';
 import '../models/building_data.dart';
 import '../models/temperature_entry.dart';
@@ -48,6 +49,14 @@ class _TemperaturePageState extends State<TemperaturePage> {
   void getEndDate(DateTime date) {
     setState(() => endDate = DateTime(date.year, date.month, date.day, 23, 59, 59));
     logger.i('END DATE: $endDate');
+  }
+
+  void getDateRange(DateTime start, DateTime end) {
+    setState(() {
+      startDate = start;
+      endDate = end;
+    });
+    logger.i('DATE RANGE: $startDate - $endDate');
   }
 
   // TODO: move this to sensor_service.dart
@@ -109,7 +118,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
         width: 800,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -132,31 +141,15 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(height: 10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            DateTimePicker(
-                              buttonText: 'Start Date',
-                              currentDate: startDate,
-                              updateDate: getStartDate,
-                            ),
-                            Text(
-                              ' - ',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                            DateTimePicker(
-                              buttonText: 'End Date',
-                              currentDate: endDate,
-                              updateDate: getEndDate,
-                            ),
+                            Text('Date Range: ${DateFormat('MM/dd/yyyy').format(startDate)} - ${DateFormat('MM/dd/yyyy').format(endDate)}'),
+                            const SizedBox(width: 10),
+                            DatePicker(startDate: startDate, endDate: endDate, dateGetter: getDateRange),
                           ],
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 40),
                         BuildingAutocomplete(
                           selectBuilding: selectBuilding,
                         ),
@@ -178,8 +171,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                     ),
                                   ),
                                   elevation: MaterialStateProperty.all(5),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimaryContainer),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondaryContainer),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),
@@ -192,8 +185,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       ),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),

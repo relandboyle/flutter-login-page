@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
-  flutter_datetime_picker_plus: ^2.1.0
   fl_chart: ^0.66.1
   google_nav_bar: ^5.0.6
   google_sign_in: ^6.2.1
@@ -48,6 +47,7 @@ dependencies:
   logger: ^2.0.2+1
   oauth2: ^2.0.2
   provider: ^6.1.1
+  syncfusion_flutter_datepicker: ^24.2.4
 
 dev_dependencies:
   flutter_test:
