@@ -5,7 +5,7 @@ ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme.light(
     brightness: Brightness.dark,
-    primary: Color.fromRGBO(131, 187, 230, 90),
+    primary: Color.fromRGBO(111, 155, 188, 1),
     onPrimary: Color.fromRGBO(58, 83, 102, 40),
     primaryContainer: Color.fromRGBO(111, 159, 196, 77),
     onPrimaryContainer: Color.fromRGBO(34, 48, 59, 23),

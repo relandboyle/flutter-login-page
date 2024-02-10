@@ -119,7 +119,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.primary,
                     elevation: 4,
                     child: TemperatureGraph(
                       spots: spots,
