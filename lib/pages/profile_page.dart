@@ -28,7 +28,7 @@ class ProfilePage extends StatelessWidget {
           IconButton(
             onPressed: signUserOut,
             icon: const Icon(Icons.logout),
-            color: Colors.lightBlue.shade900,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ],
       ),

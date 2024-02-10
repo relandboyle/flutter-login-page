@@ -28,6 +28,7 @@ class _MobileBodyState extends State<MobileBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+<<<<<<< HEAD
       floatingActionButton: FloatingActionButton(
         elevation: 10,
         highlightElevation: 10,
@@ -43,6 +44,25 @@ class _MobileBodyState extends State<MobileBody> {
             : const Icon(
                 Icons.wb_sunny_rounded,
               ),
+=======
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: FloatingActionButton(
+          elevation: 10,
+          highlightElevation: 10,
+          onPressed: () {
+            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+          },
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: Theme.of(context).brightness == Brightness.light
+              ? const Icon(
+                  Icons.nightlight_round,
+                )
+              : const Icon(
+                  Icons.wb_sunny_rounded,
+                ),
+        ),
+>>>>>>> main
       ),
       bottomNavigationBar: Container(
         color: Theme.of(context).colorScheme.primary,
