@@ -6,11 +6,10 @@ final logger = Logger();
 
 // ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
-  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.swapSpots});
+  TemperatureGraph({super.key, required this.spots, required this.outsideSpots});
 
   List<FlSpot> spots;
   List<FlSpot> outsideSpots;
-  bool swapSpots = false;
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -54,6 +53,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
@@ -87,6 +87,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
@@ -122,14 +123,14 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         horizontalInterval: 5,
         verticalInterval: 0.0005,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color.fromARGB(123, 54, 174, 244),
+          return FlLine(
+            color: Theme.of(context).colorScheme.secondary,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color.fromARGB(130, 21, 0, 255),
+          return FlLine(
+            color: Theme.of(context).colorScheme.secondaryContainer,
             strokeWidth: 1,
           );
         },
@@ -212,87 +213,4 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       ],
     );
   }
-
-  // LineChartData outsideData() {
-  //   return LineChartData(
-  //     lineTouchData: const LineTouchData(enabled: false),
-  //     gridData: FlGridData(
-  //       show: false,
-  //       drawHorizontalLine: false,
-  //       verticalInterval: 1,
-  //       horizontalInterval: 1,
-  //       getDrawingVerticalLine: (value) {
-  //         return const FlLine(
-  //           color: Color.fromARGB(255, 23, 122, 204),
-  //           strokeWidth: 1,
-  //         );
-  //       },
-  //       getDrawingHorizontalLine: (value) {
-  //         return const FlLine(
-  //           color: Color(0xff37434d),
-  //           strokeWidth: 1,
-  //         );
-  //       },
-  //     ),
-  //     titlesData: FlTitlesData(
-  //       show: false,
-  //       bottomTitles: AxisTitles(
-  //         sideTitles: SideTitles(
-  //           showTitles: true,
-  //           reservedSize: 30,
-  //           getTitlesWidget: bottomTitleWidgets,
-  //           interval: 1,
-  //         ),
-  //       ),
-  //       leftTitles: AxisTitles(
-  //         sideTitles: SideTitles(
-  //           showTitles: false,
-  //           getTitlesWidget: leftTitleWidgets,
-  //           reservedSize: 42,
-  //           interval: 1,
-  //         ),
-  //       ),
-  //       topTitles: const AxisTitles(
-  //         sideTitles: SideTitles(showTitles: false),
-  //       ),
-  //       rightTitles: const AxisTitles(
-  //         sideTitles: SideTitles(showTitles: false),
-  //       ),
-  //     ),
-  //     borderData: FlBorderData(
-  //       show: false,
-  //       border: Border.all(color: const Color(0xff37434d)),
-  //     ),
-  //     minX: widget.outsideSpots.first.x,
-  //     maxX: widget.outsideSpots.last.x,
-  //     minY: 20,
-  //     maxY: 100,
-  //     lineBarsData: [
-  //       LineChartBarData(
-  //         spots: widget.outsideSpots,
-  //         isCurved: true,
-  //         gradient: const LinearGradient(
-  //           colors: [
-  //             Colors.red,
-  //             Colors.orange,
-  //           ],
-  //         ),
-  //         barWidth: 20,
-  //         isStrokeCapRound: true,
-  //         dotData: const FlDotData(
-  //           show: false,
-  //         ),
-  //         belowBarData: BarAreaData(
-  //           show: true,
-  //           gradient: LinearGradient(
-  //             colors: [
-  //               ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-  //               ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

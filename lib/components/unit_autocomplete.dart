@@ -89,10 +89,14 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
               decoration: InputDecoration(
                 label: const Text("Select a Unit"),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
                 ),
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),

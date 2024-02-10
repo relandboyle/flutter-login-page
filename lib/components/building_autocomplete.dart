@@ -84,14 +84,11 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
             VoidCallback onFieldSubmitted,
           ) {
             return TextFormField(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
               decoration: InputDecoration(
                 label: const Text("Select a Building"),
                 border: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -109,7 +106,7 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
           optionsViewBuilder: (context, onSelected, options) => Align(
             alignment: Alignment.topLeft,
             child: Material(
-              color: Colors.grey.shade300,
+              color: Theme.of(context).colorScheme.primaryContainer,
               elevation: 4,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(
