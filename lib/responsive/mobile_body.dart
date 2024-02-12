@@ -49,7 +49,7 @@ class _MobileBodyState extends State<MobileBody> {
       bottomNavigationBar: Container(
         color: Theme.of(context).colorScheme.primary,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 14.0),
           child: GNav(
             selectedIndex: selectedIndex,
             onTabChange: (index) {
@@ -58,10 +58,10 @@ class _MobileBodyState extends State<MobileBody> {
               });
             },
             padding: const EdgeInsets.all(16),
-            activeColor: Theme.of(context).colorScheme.onPrimary,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            color: Theme.of(context).colorScheme.secondary,
-            tabBackgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+            activeColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.onPrimary,
+            tabBackgroundColor: Theme.of(context).colorScheme.onPrimary,
             gap: 8,
             tabs: const [
               GButton(

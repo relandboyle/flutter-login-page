@@ -15,17 +15,20 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSecondary, width: 2),
           ),
-          fillColor: Colors.grey.shade200,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+          ),
+          fillColor: Theme.of(context).colorScheme.background,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(
-            color: Colors.grey[500],
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
       ),

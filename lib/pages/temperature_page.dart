@@ -1,9 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:login_page/components/building_autocomplete.dart';
-import 'package:login_page/components/unit_autocomplete.dart';
-import '../components/date_picker.dart';
+import 'package:heat_sync/components/building_autocomplete.dart';
+import 'package:heat_sync/components/date_picker.dart';
+import 'package:heat_sync/components/unit_autocomplete.dart';
+import 'package:intl/intl.dart';
 import '../components/temperature_graph.dart';
 import '../models/building_data.dart';
 import '../models/temperature_entry.dart';
@@ -25,9 +26,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  late List<FlSpot> spots = <FlSpot>[const FlSpot(170.70894, 20), const FlSpot(170.71758, 20)];
-  late List<FlSpot> outsideSpots = [const FlSpot(0, 0)];
-  bool swapSpots = false;
+  List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
+  List<FlSpot> spots = [const FlSpot(0, 20)];
+  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
+  DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
@@ -39,10 +41,31 @@ class _TemperaturePageState extends State<TemperaturePage> {
     logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
   }
 
+  void getStartDate(DateTime date) {
+    setState(() => startDate = date);
+    logger.i('START DATE: $startDate');
+  }
+
+  void getEndDate(DateTime date) {
+    setState(() => endDate = DateTime(date.year, date.month, date.day, 23, 59, 59));
+    logger.i('END DATE: $endDate');
+  }
+
+  void getDateRange(DateTime start, DateTime end) {
+    setState(() {
+      startDate = start;
+      endDate = end;
+    });
+    // logger.i('DATE RANGE: $startDate - $endDate');
+  }
+
   // TODO: move this to sensor_service.dart
   void getTemperatureData() async {
     // request sensor data from the server passing channelId, startTime, and endTime
-    await getSensorData('73844', '2024-01-15T00:00:00Z', '2024-02-05T23:59:59Z');
+    await getSensorData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
+    for(var entry in temperatureEntries) {
+      logger.i('ENTRY: ${entry.temperature}');
+    }
     spots = temperatureEntries
         .map((entry) => FlSpot(
               DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
@@ -62,12 +85,13 @@ class _TemperaturePageState extends State<TemperaturePage> {
     setState(() {
       spots = spots;
       outsideSpots = outsideSpots;
-      swapSpots = !swapSpots;
     });
   }
 
   // TODO: move this to sensor_service.dart
   Future<void> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
+    logger.i('QUERY PARAMS: $channelId, $dateRangeStart, $dateRangeEnd');
+
     final response = await http
         .post(
             // Uri.parse("http://localhost:8089/api/v1/sensor/filteredSensorData"),
@@ -97,23 +121,21 @@ class _TemperaturePageState extends State<TemperaturePage> {
         width: 800,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Select date range:"),
-                    SizedBox(width: 30),
-                    DatePicker(),
-                  ],
-                ),
-                TemperatureGraph(
-                  spots: spots,
-                  outsideSpots: outsideSpots,
-                  swapSpots: swapSpots,
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Card(
+                    color: Theme.of(context).colorScheme.primary,
+                    elevation: 10,
+                    child: TemperatureGraph(
+                      spots: spots,
+                      outsideSpots: outsideSpots,
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -122,6 +144,15 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text('Date Range: ${DateFormat('MM/dd/yyyy').format(startDate)} - ${DateFormat('MM/dd/yyyy').format(endDate)}'),
+                            const SizedBox(width: 10),
+                            DatePicker(startDate: startDate, endDate: endDate, dateGetter: getDateRange),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
                         BuildingAutocomplete(
                           selectBuilding: selectBuilding,
                         ),
@@ -132,7 +163,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         ),
                         const SizedBox(height: 25),
                         ElevatedButton(
-                          onPressed: !selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
+                          onPressed: selectedUnit.channelId.isNotEmpty ? getTemperatureData : null,
                           style: selectedUnit.channelId.isNotEmpty
                               ? ButtonStyle(
                                   shape: MaterialStateProperty.all(
@@ -142,9 +173,9 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       ),
                                     ),
                                   ),
-                                  elevation: MaterialStateProperty.all(10),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                                  elevation: MaterialStateProperty.all(5),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondaryContainer),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),
@@ -157,8 +188,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       ),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inverseSurface),
-                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.all(15),
                                   ),

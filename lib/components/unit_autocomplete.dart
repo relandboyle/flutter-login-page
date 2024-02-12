@@ -88,7 +88,16 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
             return TextFormField(
               decoration: InputDecoration(
                 label: const Text("Select a Unit"),
-                border: const OutlineInputBorder(borderSide: BorderSide()),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),
               enabled: widget.selectedBuildingId.isNotEmpty,
@@ -99,6 +108,28 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
               },
             );
           },
+          optionsViewBuilder: (context, onSelected, options) => Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 4,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 350,
+                ),
+                child: ListView(
+                  children: options
+                      .map((UnitData option) => ListTile(
+                            title: Text(option.fullUnit),
+                            onTap: () {
+                              onSelected(option);
+                            },
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
           optionsBuilder: (TextEditingValue textEditingValue) async {
             setState(() {
               _networkError = false;
@@ -112,7 +143,7 @@ class UnitAutocompleteState extends State<UnitAutocomplete> {
           },
           displayStringForOption: (option) => option.fullUnit,
           onSelected: (UnitData selection) {
-            // debugdebugPrint('You just selected ${selection.fullAddress}');
+            // debugdebuglogger.i('You just selected ${selection.fullAddress}');
             widget.selectUnit(selection);
           },
         ),
@@ -132,7 +163,7 @@ class _FakeAPI {
     }
 
     final response = await http.post(
-      // Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
+        // Uri.parse("http://localhost:8089/api/v1/unit/searchUnits"),
         Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/unit/searchUnits'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

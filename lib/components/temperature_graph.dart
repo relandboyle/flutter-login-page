@@ -4,21 +4,25 @@ import 'package:logger/logger.dart';
 
 final logger = Logger();
 
+// ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
-  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.swapSpots});
+  TemperatureGraph({super.key, required this.spots, required this.outsideSpots});
 
-  List<FlSpot> spots = const [];
-  List<FlSpot> outsideSpots = [];
-  bool swapSpots = false;
+  List<FlSpot> spots;
+  List<FlSpot> outsideSpots;
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
 }
 
 class _TemperatureGraphState extends State<TemperatureGraph> {
-  List<Color> gradientColors = [
-    const Color.fromARGB(255, 39, 212, 0),
-    Colors.blue,
+  List<Color> insideGradient = [
+    Colors.green.shade300,
+    Colors.blue.shade300,
+  ];
+  List<Color> outsideGradient = [
+    Colors.deepOrange.shade700,
+    Colors.deepPurple.shade700,
   ];
 
   bool showAvg = false;
@@ -37,8 +41,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
               bottom: 12,
             ),
             child: LineChart(
-              showAvg ? avgData() : mainData(),
-              duration: const Duration(milliseconds: 500),
+              chartData(),
+              duration: const Duration(milliseconds: 800),
+              chartRendererKey: const Key('linechart'),
             ),
           ),
         ),
@@ -48,6 +53,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
@@ -81,25 +87,29 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
+      color: Colors.blueGrey,
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
     String text;
     switch (value.toInt()) {
+      case 0:
+        text = value.toInt().toString();
+        break;
       case 20:
-        text = '20F';
+        text = '20°F';
         break;
       case 40:
-        text = '40F';
+        text = '40°F';
         break;
       case 60:
-        text = '60F';
+        text = '60°F';
         break;
       case 80:
-        text = '80F';
+        text = '80°F';
         break;
       case 100:
-        text = '100F';
+        text = '100°F';
         break;
       default:
         return Container();
@@ -108,7 +118,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     return Text(text, style: style, textAlign: TextAlign.left);
   }
 
-  LineChartData mainData() {
+  LineChartData chartData() {
     return LineChartData(
       gridData: FlGridData(
         show: true,
@@ -116,14 +126,14 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         horizontalInterval: 5,
         verticalInterval: 0.0005,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Colors.red,
+          return FlLine(
+            color: Theme.of(context).colorScheme.secondary,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Colors.orange,
+          return FlLine(
+            color: Theme.of(context).colorScheme.secondaryContainer,
             strokeWidth: 1,
           );
         },
@@ -147,26 +157,26 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
+            reservedSize: 42,
             interval: 20,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
           ),
         ),
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: Theme.of(context).colorScheme.secondary),
       ),
-      minX: 170.70894,
-      maxX: 170.71758,
-      minY: 20,
-      maxY: 100,
+      minX: widget.spots.first.x,
+      maxX: widget.spots.last.x,
+      minY: -10,
+      maxY: 110,
       lineBarsData: [
         LineChartBarData(
           spots: widget.spots,
           isCurved: true,
           gradient: LinearGradient(
-            colors: gradientColors,
+            colors: insideGradient,
           ),
           barWidth: 5,
           isStrokeCapRound: true,
@@ -176,98 +186,30 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+              begin: const Alignment(-1.0, 0.0),
+              end: const Alignment(1.0, 0.0),
+              colors: insideGradient.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: const LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: bottomTitleWidgets,
-            interval: 1,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 7),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
-          ],
+          // curveSmoothness: 1.5,
+          spots: widget.outsideSpots,
           isCurved: true,
           gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!,
-            ],
+            colors: outsideGradient,
           ),
           barWidth: 5,
-          isStrokeCapRound: true,
+          isStrokeCapRound: false,
           dotData: const FlDotData(
             show: false,
           ),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1]).lerp(0.2)!.withOpacity(0.1),
-              ],
+              begin: const Alignment(-1.0, 0.0),
+              end: const Alignment(1.0, 0.0),
+              colors: outsideGradient.map((color) => color.withOpacity(0.3)).toList(),
             ),
           ),
         ),

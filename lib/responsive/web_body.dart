@@ -33,8 +33,10 @@ class _WebBodyState extends State<WebBody> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(
-      color: Theme.of(context).colorScheme.onTertiaryContainer,
+      color: Theme.of(context).colorScheme.onPrimary,
     );
+    final Color foregroundColor = Theme.of(context).colorScheme.onPrimaryContainer;
+    final Color backgroundColor = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
       appBar: AppBar(
@@ -42,8 +44,8 @@ class _WebBodyState extends State<WebBody> {
           'HeatSync',
           style: textStyle,
         ),
-        foregroundColor: Theme.of(context).colorScheme.primary,
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        foregroundColor: foregroundColor,
+        backgroundColor: backgroundColor,
         actions: [
           SizedBox(
             height: double.infinity,
@@ -51,8 +53,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(0),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -71,8 +73,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(1),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -91,8 +93,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(2),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -111,8 +113,8 @@ class _WebBodyState extends State<WebBody> {
               onPressed: () => selectPage(3),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                foregroundColor: foregroundColor,
+                backgroundColor: backgroundColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(0),
@@ -138,7 +140,7 @@ class _WebBodyState extends State<WebBody> {
                     Icons.wb_sunny_rounded,
                   ),
             hoverColor: Theme.of(context).colorScheme.secondary,
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           const SizedBox(width: 15),
         ],

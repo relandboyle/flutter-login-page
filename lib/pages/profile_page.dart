@@ -24,11 +24,11 @@ class ProfilePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Logout:'),
+          Text('Logout:', style: TextStyle(color:  Theme.of(context).colorScheme.onPrimary),),
           IconButton(
             onPressed: signUserOut,
             icon: const Icon(Icons.logout),
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ],
       ),

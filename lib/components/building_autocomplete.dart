@@ -75,7 +75,7 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+      children: [
         Autocomplete<BuildingData>(
           fieldViewBuilder: (
             BuildContext context,
@@ -86,15 +86,45 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
             return TextFormField(
               decoration: InputDecoration(
                 label: const Text("Select a Building"),
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                ),
+                focusColor: Theme.of(context).colorScheme.onPrimaryContainer,
                 errorText: _networkError ? 'Network error, please try again.' : null,
               ),
               controller: controller,
               focusNode: focusNode,
             );
           },
+          optionsViewBuilder: (context, onSelected, options) => Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              elevation: 4,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 350,
+                ),
+                child: ListView(
+                  children: options
+                      .map((BuildingData option) => ListTile(
+                            title: Text(option.fullAddress),
+                            onTap: () {
+                              onSelected(option);
+                            },
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
           optionsBuilder: (TextEditingValue textEditingValue) async {
             setState(() {
               _networkError = false;
@@ -106,7 +136,6 @@ class BuildingAutocompleteState extends State<BuildingAutocomplete> {
             _lastOptions = options;
             return options;
           },
-
           displayStringForOption: (option) => option.fullAddress,
           onSelected: (BuildingData selection) {
             widget.selectBuilding(selection);
@@ -128,7 +157,7 @@ class _FakeAPI {
     }
 
     final response = await http.post(
-      // Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
+        // Uri.parse("http://localhost:8089/api/v1/building/searchBuildings"),
         Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/building/searchBuildings'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

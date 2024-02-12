@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import '../components/my_button.dart';
 import '../components/my_loading_dialog.dart';
 import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
+
+Logger logger = Logger();
 
 class LoginPage extends StatefulWidget {
   final Function()? toggleLoginRegister;
@@ -24,10 +27,10 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
       if (mounted) hideLoadingDialog(context);
-      showFeedback('Sent reset email', Colors.green);
+      showFeedback('Sent reset email', const Color.fromARGB(255, 14, 93, 17));
     } on FirebaseAuthException catch (e) {
       if (mounted) hideLoadingDialog(context);
-      showFeedback(e.code, Colors.red);
+      showFeedback(e.code, const Color.fromARGB(255, 101, 19, 13));
     }
   }
 
@@ -42,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       if (mounted) hideLoadingDialog(context);
     } on FirebaseAuthException catch (e) {
       if (mounted) hideLoadingDialog(context);
-      showFeedback(e.code, Colors.red);
+      showFeedback(e.code, const Color.fromARGB(255, 101, 19, 13));
     }
   }
 
@@ -75,11 +78,10 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 50),
-              // logo
-              const Icon(Icons.lock, size: 100),
+              Image.asset('lib/images/heatsync.png', height: 100),
               const SizedBox(height: 50),
               // welcome
-              Text('Welcome back!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+              Text('Welcome to HeatSync.', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 20)),
               const SizedBox(height: 25),
               //username
               MyTextField(controller: emailController, hintText: 'Username', obscureText: false),
@@ -118,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(width: 4),
                   GestureDetector(
                     onTap: widget.toggleLoginRegister,
-                    child: const Text(
+                    child: Text(
                       'Create an account.',
-                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -160,12 +162,12 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(width: 20),
                   MySquareTile(
                     imagePath: 'lib/images/github.png',
-                    onTap: () => print(widget),
+                    onTap: () => logger.i(widget),
                   ),
                   const SizedBox(width: 20),
                   MySquareTile(
                     imagePath: 'lib/images/apple.png',
-                    onTap: () => print(widget),
+                    onTap: () => logger.i(widget),
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:login_page/components/my_textfield.dart';
+import '../components/my_textfield.dart';
 
 class BuildingsPage extends StatelessWidget {
   const BuildingsPage({super.key});
@@ -75,8 +75,8 @@ class BuildingsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),
@@ -95,8 +95,8 @@ class BuildingsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),
@@ -115,8 +115,8 @@ class BuildingsPage extends StatelessWidget {
                           ),
                         ),
                         elevation: MaterialStateProperty.all(10),
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primaryContainer),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondaryContainer),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
                         padding: MaterialStateProperty.all(
                           const EdgeInsets.all(15),
                         ),
