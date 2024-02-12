@@ -78,15 +78,10 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 50),
-              // logo
-              Icon(
-                Icons.lock,
-                size: 100,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
+              Image.asset('lib/images/heatsync.png', height: 100),
               const SizedBox(height: 50),
               // welcome
-              Text('Welcome back!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+              Text('Welcome to HeatSync.', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 20)),
               const SizedBox(height: 25),
               //username
               MyTextField(controller: emailController, hintText: 'Username', obscureText: false),

@@ -93,20 +93,23 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     );
     String text;
     switch (value.toInt()) {
+      case 0:
+        text = value.toInt().toString();
+        break;
       case 20:
-        text = '20F';
+        text = '20°F';
         break;
       case 40:
-        text = '40F';
+        text = '40°F';
         break;
       case 60:
-        text = '60F';
+        text = '60°F';
         break;
       case 80:
-        text = '80F';
+        text = '80°F';
         break;
       case 100:
-        text = '100F';
+        text = '100°F';
         break;
       default:
         return Container();
@@ -154,9 +157,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
+            reservedSize: 42,
             interval: 20,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
           ),
         ),
       ),
@@ -166,8 +169,8 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       ),
       minX: widget.spots.first.x,
       maxX: widget.spots.last.x,
-      minY: 20,
-      maxY: 100,
+      minY: -10,
+      maxY: 110,
       lineBarsData: [
         LineChartBarData(
           spots: widget.spots,

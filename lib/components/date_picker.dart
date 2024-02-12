@@ -10,8 +10,9 @@ class DatePicker extends StatefulWidget {
 
   @override
   State<DatePicker> createState() => _DatePickerState();
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now();
+  DateTime startDate;
+  DateTime endDate;
+  DateTime today = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
   Function(DateTime, DateTime) dateGetter;
 }
 
@@ -44,36 +45,46 @@ class _DatePickerState extends State<DatePicker> {
               SizedBox(
                 width: 350,
                 child: Padding(
-                  padding: const EdgeInsets.all(50),
+                  padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
                   child: SfDateRangePicker(
-                    onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                      logger.i(args.value.toString());
-                      logger.i(args.value is PickerDateRange);
-                      if (args.value is PickerDateRange) {
-                        setState(() {
-                          widget.startDate = DateTime.utc(args.value.startDate.year, args.value.startDate.month, args.value.startDate.day);
-                          // widget.endDate = DateTime.utc(args.value.endDate.year, args.value.endDate.month, args.value.endDate.day);
-                        });
-                      } else {
-                        setState(() {
-                          // widget.startDate = DateTime.utc(args.value.startDate.year, args.value.startDate.month, args.value.startDate.day);
-                          widget.endDate = DateTime.utc(args.value.endDate.year, args.value.endDate.month, args.value.endDate.day, 23, 59, 59);
-                        });
-                      }
-                      widget.endDate = DateTime.utc(args.value.endDate.year, args.value.endDate.month, args.value.endDate.day, 23, 59, 59);
-                      widget.dateGetter(widget.startDate, widget.endDate);
-                    },
+                    showNavigationArrow: true,
+                    showTodayButton: true,
+                    minDate: DateTime.utc(2021, 1, 1),
+                    maxDate: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59),
                     selectionMode: DateRangePickerSelectionMode.range,
                     initialSelectedRange: PickerDateRange(widget.startDate, widget.endDate),
+                    onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                      logger.i('1 ${args.value.toString()}');
+                      // setState(() {
+                      //   widget.startDate = args.value.startDate;
+                      //   widget.endDate = args.value.endDate ?? args.value.startDate;
+                      // });
+                      // widget.dateGetter(args.value.startDate, args.value.endDate);
+                      logger.i('2 ${widget.startDate}, ${widget.endDate}');
+                    },
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Close'),
+              // const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                          side: BorderSide.none),
+                    ),
+                    foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Close'),
+                ),
               ),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_page/authentication/login_or_register_page.dart';
+import 'package:heat_sync/authentication/login_or_register_page.dart';
 import '../pages/home_page.dart';
 
 class AuthPage extends StatefulWidget {

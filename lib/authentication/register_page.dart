@@ -72,14 +72,10 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               const SizedBox(height: 50),
               // logo
-              Icon(
-                Icons.lock,
-                size: 48,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
+              Image.asset('lib/images/heatsync.png', height: 57),
               const SizedBox(height: 41),
               // welcome
-              Text('Please create an account!', style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+              Text('Please create an account!', style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontSize: 14)),
               const SizedBox(height: 25),
               //username
               MyTextField(controller: emailController, hintText: 'Username', obscureText: false),
@@ -109,7 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: widget.toggleLoginRegister,
                   child: Text(
                     'Sign in.',
-                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer, fontWeight: FontWeight.bold),
                   ),
                 )
               ]),

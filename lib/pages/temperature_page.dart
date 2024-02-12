@@ -1,9 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:login_page/components/building_autocomplete.dart';
-import 'package:login_page/components/date_picker.dart';
-import 'package:login_page/components/unit_autocomplete.dart';
+import 'package:heat_sync/components/building_autocomplete.dart';
+import 'package:heat_sync/components/date_picker.dart';
+import 'package:heat_sync/components/unit_autocomplete.dart';
 import 'package:intl/intl.dart';
 import '../components/temperature_graph.dart';
 import '../models/building_data.dart';
@@ -56,13 +56,16 @@ class _TemperaturePageState extends State<TemperaturePage> {
       startDate = start;
       endDate = end;
     });
-    logger.i('DATE RANGE: $startDate - $endDate');
+    // logger.i('DATE RANGE: $startDate - $endDate');
   }
 
   // TODO: move this to sensor_service.dart
   void getTemperatureData() async {
     // request sensor data from the server passing channelId, startTime, and endTime
     await getSensorData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
+    for(var entry in temperatureEntries) {
+      logger.i('ENTRY: ${entry.temperature}');
+    }
     spots = temperatureEntries
         .map((entry) => FlSpot(
               DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
