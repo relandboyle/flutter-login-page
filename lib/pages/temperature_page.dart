@@ -26,8 +26,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
   List<FlSpot> spots = [const FlSpot(0, 20)];
+  List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
   DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
   DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
 

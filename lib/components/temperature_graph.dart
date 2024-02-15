@@ -120,6 +120,27 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   LineChartData chartData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Theme.of(context).colorScheme.primary,
+          getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+            // map is returning x and y for both touchedBarSpots
+            // consider a loop and return x/y for one, y-only for the other
+            return touchedBarSpots.map((barSpot) {
+              final flSpot = barSpot;
+              if (flSpot.x == 0 || flSpot.x == 11) {
+                return null;
+              }
+              return LineTooltipItem(
+                '${flSpot.y}°F\n${flSpot.x}',
+                const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              );
+            }).toList();
+          },
+        ),
+        // touchCallback: (LineTouchResponse touchResponse) {},
+        handleBuiltInTouches: true,
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -195,11 +216,11 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         LineChartBarData(
           // curveSmoothness: 1.5,
           spots: widget.outsideSpots,
-          isCurved: true,
+          isCurved: false,
           gradient: LinearGradient(
             colors: outsideGradient,
           ),
-          barWidth: 5,
+          barWidth: 3,
           isStrokeCapRound: false,
           dotData: const FlDotData(
             show: false,
