@@ -1,30 +1,28 @@
-import 'package:fl_chart/fl_chart.dart';
-
 class TemperatureEntry {
   final String entryId;
   final String channelId;
-  final String serverTime;
-  final String createdAt;
+  final int serverTime;
+  final int createdAt;
   final String fieldOneLabel;
   final String temperature;
   final String name;
   final String latitude;
   final String longitude;
   final String outsideTemperature;
-  final FlSpot spot;
+  final Map<String, dynamic> flutterSpot;
 
   TemperatureEntry({
     this.entryId = '',
     this.channelId = '',
-    this.serverTime = '',
-    this.createdAt = '',
+    this.serverTime = 0,
+    this.createdAt = 0,
     this.fieldOneLabel = '',
     this.temperature = '',
     this.name = '',
     this.latitude = '',
     this.longitude = '',
     this.outsideTemperature = '',
-    this.spot = const FlSpot(0, 0),
+    this.flutterSpot = const {},
   });
 
   factory TemperatureEntry.fromJson(dynamic json) {
@@ -39,10 +37,7 @@ class TemperatureEntry {
       latitude: json["latitude"] as String,
       longitude: json["longitude"] as String,
       outsideTemperature: json["outsideTemperature"] as String,
-      spot: FlSpot(
-        DateTime.parse(json["serverTime"]).millisecondsSinceEpoch.toDouble() / 10000000000,
-        double.parse((double.parse(json["temperature"]) * (9 / 5) + 32).toStringAsFixed(2)),
-      ),
+      flutterSpot: json["flutterSpot"] as Map<String, dynamic>,
     );
   }
 
@@ -58,7 +53,7 @@ class TemperatureEntry {
       'latitude': latitude,
       'longitude': longitude,
       'outsideTemperature': outsideTemperature,
-      'spot': spot,
+      'flutterSpot': flutterSpot,
     };
   }
 }

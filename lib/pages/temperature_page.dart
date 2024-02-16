@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:heat_sync/models/sensor_data_response.dart';
 import 'package:logger/logger.dart';
 import 'package:heat_sync/components/building_autocomplete.dart';
 import 'package:heat_sync/components/date_picker.dart';
@@ -26,6 +27,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
+  SensorDataResponse sensorDataResponse = SensorDataResponse();
+  List<int> bottomTileSpacer = [];
   List<FlSpot> spots = [const FlSpot(0, 20)];
   List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
   DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
@@ -63,34 +66,42 @@ class _TemperaturePageState extends State<TemperaturePage> {
   void getTemperatureData() async {
     // request sensor data from the server passing channelId, startTime, and endTime
     await getSensorData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
-    for(var entry in temperatureEntries) {
-      logger.i('ENTRY: ${entry.temperature}');
-    }
+    // for (var entry in temperatureEntries) {
+    //   logger.i('ENTRY: ${entry.temperature}');
+    // }
     spots = temperatureEntries
         .map((entry) => FlSpot(
-              DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
+              entry.serverTime.toDouble(),
               double.parse((double.parse(entry.temperature) * (9 / 5) + 32).toStringAsFixed(2)),
             ))
         .toList();
+
     outsideSpots = temperatureEntries
         .map((entry) => FlSpot(
-              DateTime.parse(entry.serverTime).millisecondsSinceEpoch.toDouble() / 10000000000,
+              entry.serverTime.toDouble(),
               double.parse((double.parse(entry.outsideTemperature) * (9 / 5) + 32).toStringAsFixed(2)),
             ))
         .toList();
 
-    logger.i('SPOTS: $spots');
-    logger.i('OUTSIDE SPOTS: $outsideSpots');
+    // logger.i('SPOTS: $spots');
+    // logger.i('SPOTS: ${spots.first.x.runtimeType}, ${spots.first.y.runtimeType}');
+    // logger.i('OUTSIDE SPOTS: $outsideSpots');
 
     setState(() {
       spots = spots;
       outsideSpots = outsideSpots;
     });
+
+    // logger.i('SPOTS: $spots');
+    double myInt = 12.05;
+    logger.i('${myInt.toDouble()}, ${myInt.runtimeType}, ${myInt.toDouble().runtimeType}');
+    logger.i('SPOTS: ${spots.first.x.toDouble().runtimeType}, ${spots.first.y.runtimeType}');
+    // logger.i('OUTSIDE SPOTS: $outsideSpots');
   }
 
   // TODO: move this to sensor_service.dart
   Future<void> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
-    logger.i('QUERY PARAMS: $channelId, $dateRangeStart, $dateRangeEnd');
+    // logger.i('QUERY PARAMS: $channelId, $dateRangeStart, $dateRangeEnd');
 
     final response = await http
         .post(
@@ -109,9 +120,14 @@ class _TemperaturePageState extends State<TemperaturePage> {
       return onError;
     });
 
-    Iterable res = json.decode(response.body);
-    logger.i('SENSOR DATA: $res');
-    setState(() => temperatureEntries = res.map((entry) => TemperatureEntry.fromJson(entry)));
+    SensorDataResponse res = SensorDataResponse.fromJson(json.decode(response.body));
+    logger.i("RESPONSE: ${res.sensorData[0].flutterSpot['value0'].runtimeType}, ${res.sensorData[0].flutterSpot['value1'].runtimeType}");
+
+    // setState(() => temperatureEntries = res.sensorData.map((entry) => TemperatureEntry.fromJson(entry)));
+    setState(() => temperatureEntries = res.sensorData);
+    setState(() => bottomTileSpacer = res.bottomTileSpacer);
+    // logger.i('SPACER: ${res.bottomTileSpacer}');
+    // logger.i('SENSOR DATA: ${res.sensorData}');
   }
 
   @override
