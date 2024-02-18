@@ -9,7 +9,6 @@ class TemperatureEntry {
   final String latitude;
   final String longitude;
   final String outsideTemperature;
-  final Map<String, dynamic> flutterSpot;
 
   TemperatureEntry({
     this.entryId = '',
@@ -22,22 +21,20 @@ class TemperatureEntry {
     this.latitude = '',
     this.longitude = '',
     this.outsideTemperature = '',
-    this.flutterSpot = const {},
   });
 
   factory TemperatureEntry.fromJson(dynamic json) {
     return TemperatureEntry(
       entryId: json["entryId"] as String,
       channelId: json["channelId"] as String,
-      serverTime: json["serverTime"],
-      createdAt: json["createdAt"],
+      serverTime: json["serverTime"] as int,
+      createdAt: json["createdAt"] as int,
       fieldOneLabel: json["fieldOneLabel"] as String,
       temperature: json["temperature"] as String,
       name: json["name"] as String,
       latitude: json["latitude"] as String,
       longitude: json["longitude"] as String,
       outsideTemperature: json["outsideTemperature"] as String,
-      flutterSpot: json["flutterSpot"] as Map<String, dynamic>,
     );
   }
 
@@ -53,7 +50,6 @@ class TemperatureEntry {
       'latitude': latitude,
       'longitude': longitude,
       'outsideTemperature': outsideTemperature,
-      'flutterSpot': flutterSpot,
     };
   }
 }

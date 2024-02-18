@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:heat_sync/components/building_autocomplete.dart';
 import 'package:heat_sync/components/unit_autocomplete.dart';
-import 'package:heat_sync/models/sensor_data_response.dart';
 import 'package:heat_sync/components/date_picker.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import '../components/temperature_graph.dart';
-import '../models/temperature_entry.dart';
 import '../services/sensor_service.dart';
 import '../models/building_data.dart';
 import '../models/unit_data.dart';
@@ -25,12 +23,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
   SensorService sensorService = SensorService();
-  Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
-  SensorDataResponse sensorDataResponse = SensorDataResponse();
-  List<int> bottomTileSpacer = [];
-  List<FlSpot> spots = [const FlSpot(0, 20)];
-  List<FlSpot> outsideSpots = [const FlSpot(0, 20)];
-  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
+  List<int> bottomTitleSpacer = [];
+  List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
+  List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
+  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 3);
   DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
 
   void selectBuilding(BuildingData building) {
@@ -61,26 +57,25 @@ class _TemperaturePageState extends State<TemperaturePage> {
   }
 
   void getTemperatureData() async {
-    Map<String, List<FlSpot>> data = {};
-    data = await sensorService.getTemperatureData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
-
-    logger.i('SPOTS: $spots');
-    logger.i('OUTSIDE SPOTS: $outsideSpots');
+    Map<String, dynamic> data = {};
+    data = await sensorService.getTemperatureData(selectedUnit.channelId, startDate, endDate);
 
     setState(() {
       spots = data['spots']!;
       outsideSpots = data['outsideSpots']!;
+      bottomTitleSpacer = data['bottomTitleSpacer']!;
     });
 
     logger.i('SPOTS: $spots');
     logger.i('OUTSIDE SPOTS: $outsideSpots');
+    logger.i('BOTTOM TITLE SPACER: $bottomTitleSpacer');
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 800,
+        width: 850,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -96,6 +91,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     child: TemperatureGraph(
                       spots: spots,
                       outsideSpots: outsideSpots,
+                      bottomTitleSpacer: bottomTitleSpacer,
                     ),
                   ),
                 ),
