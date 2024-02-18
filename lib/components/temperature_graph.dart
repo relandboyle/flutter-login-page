@@ -1,15 +1,17 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:intl/intl.dart';
 
 final logger = Logger();
 
 // ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
-  TemperatureGraph({super.key, required this.spots, required this.outsideSpots});
+  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.bottomTitleSpacer});
 
-  List<FlSpot> spots;
-  List<FlSpot> outsideSpots;
+  List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
+  List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
+  List<int> bottomTitleSpacer = [];
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -26,6 +28,12 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   ];
 
   bool showAvg = false;
+
+  String getFormattedDate(int dateMillis) {
+    String formattedDate = DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(dateMillis));
+    logger.i('FORMATTED DATE: $formattedDate');
+    return formattedDate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,30 +65,19 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       fontWeight: FontWeight.bold,
       fontSize: 16,
     );
+    String date = getFormattedDate(value.toInt());
+    // logger.i('DATE: $date');
     Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('JAN', style: style);
-        break;
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      case 11:
-        text = const Text('DEC', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
+
+    // if (widget.bottomTitleSpacer.contains(value.toInt())) {
+    //   logger.i('VALUE: $value');
+      text = Text(date, style: style);
+    // } else {
+    //   text = const Text('', style: style);
+    // }
 
     return SideTitleWidget(
-      axisSide: meta.axisSide,
+      axisSide: AxisSide.bottom,
       child: text,
     );
   }
@@ -194,7 +191,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
       maxY: 110,
       lineBarsData: [
         LineChartBarData(
-          spots: widget.spots,
+          spots: widget.spots.isNotEmpty ? widget.spots : [const FlSpot(0.0, 0.0)],
           isCurved: true,
           gradient: LinearGradient(
             colors: insideGradient,
@@ -215,7 +212,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         ),
         LineChartBarData(
           // curveSmoothness: 1.5,
-          spots: widget.outsideSpots,
+          spots: widget.outsideSpots.isNotEmpty ? widget.outsideSpots : [const FlSpot(0.0, 0.0)],
           isCurved: false,
           gradient: LinearGradient(
             colors: outsideGradient,

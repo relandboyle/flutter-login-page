@@ -1,25 +1,25 @@
 import 'temperature_entry.dart';
 
 class SensorDataResponse {
-  List<TemperatureEntry> sensorData;
-  List<int> bottomTileSpacer;
+  final List<TemperatureEntry> sensorData;
+  final List<int> bottomTitleSpacer;
 
   SensorDataResponse({
     this.sensorData = const [],
-    this.bottomTileSpacer = const [],
+    this.bottomTitleSpacer = const [],
   });
 
-  factory SensorDataResponse.fromJson(Map<String, List<dynamic>> json) {
+  factory SensorDataResponse.fromJson(Map<String, dynamic> json) {
     return SensorDataResponse(
       sensorData: List<TemperatureEntry>.from(json['sensorData']!.map((x) => TemperatureEntry.fromJson(x))),
-      bottomTileSpacer: List<int>.from(json['bottomTileSpacer'] as Iterable),
+      bottomTitleSpacer: List<int>.from(json['bottomTitleSpacer'] as Iterable),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'sensorData': List<TemperatureEntry>.from(sensorData.map((x) => x.toJson())),
-      'bottomTileSpacer': bottomTileSpacer,
+      'bottomTitleSpacer': bottomTitleSpacer,
     };
   }
 }
