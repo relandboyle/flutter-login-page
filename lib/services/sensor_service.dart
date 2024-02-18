@@ -46,8 +46,9 @@ class SensorService {
 
   Future<SensorDataResponse> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
     final response = await http
-        .post(Uri.parse("http://localhost:8089/api/v1/sensor/filteredSensorData"),
-            // Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/sensor/filteredSensorData'),
+        .post(
+          // Uri.parse("http://localhost:8089/api/v1/sensor/filteredSensorData"),
+            Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/sensor/filteredSensorData'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
