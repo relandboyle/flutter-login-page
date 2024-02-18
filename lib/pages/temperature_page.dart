@@ -26,6 +26,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
   List<int> bottomTitleSpacer = [];
   List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
+  double bottomTileInterval = double.infinity;
   DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 3);
   DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
 
@@ -61,9 +62,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
     data = await sensorService.getTemperatureData(selectedUnit.channelId, startDate, endDate);
 
     setState(() {
-      spots = data['spots']!;
-      outsideSpots = data['outsideSpots']!;
-      bottomTitleSpacer = data['bottomTitleSpacer']!;
+      spots = data['spots'];
+      outsideSpots = data['outsideSpots'];
+      bottomTitleSpacer = data['bottomTitleSpacer'];
+      bottomTileInterval = (data['spots'].length / 10).toDouble();
     });
 
     logger.i('SPOTS: $spots');
@@ -92,6 +94,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       spots: spots,
                       outsideSpots: outsideSpots,
                       bottomTitleSpacer: bottomTitleSpacer,
+                      bottomTitleInterval: bottomTileInterval,
                     ),
                   ),
                 ),

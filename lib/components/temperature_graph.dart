@@ -7,11 +7,12 @@ final logger = Logger();
 
 // ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
-  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.bottomTitleSpacer});
+  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.bottomTitleSpacer, required this.bottomTitleInterval});
 
   List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
   List<int> bottomTitleSpacer = [];
+  double bottomTitleInterval = double.infinity;
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -69,17 +70,14 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     // logger.i('DATE: $date');
     Widget text;
 
-    // if (widget.bottomTitleSpacer.contains(value.toInt())) {
-    //   logger.i('VALUE: $value');
+    if (widget.bottomTitleSpacer.contains(value.toInt())) {
+      logger.i('VALUE: $value');
       text = Text(date, style: style);
-    // } else {
-    //   text = const Text('', style: style);
-    // }
+    } else {
+      text = const Text('', style: style);
+    }
 
-    return SideTitleWidget(
-      axisSide: AxisSide.bottom,
-      child: text,
-    );
+    return text;
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
@@ -157,7 +155,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         },
       ),
       titlesData: FlTitlesData(
-        show: true,
+        show: false,
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -166,9 +164,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
+            showTitles: false,
             reservedSize: 30,
-            interval: 1,
+            interval: widget.spots.length / 10,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),

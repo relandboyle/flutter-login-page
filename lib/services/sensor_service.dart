@@ -19,18 +19,16 @@ class SensorService {
       logger.i('TRY TRY AGAIN');
       spots = response.sensorData
           .map((entry) => FlSpot(
-                entry.serverTime.toDouble(),
+                entry.serverTime.toDouble() / 1000000000,
                 // double.parse(entry.serverTime.toString()),
-                // 30.05,
                 double.parse((double.parse(entry.temperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
           .toList();
 
       outsideSpots = response.sensorData
           .map((entry) => FlSpot(
-                entry.serverTime.toDouble(),
+                entry.serverTime.toDouble() / 1000000000,
                 // double.parse(entry.serverTime.toString()),
-                // 60.05,
                 double.parse((double.parse(entry.outsideTemperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
           .toList();
