@@ -1,18 +1,16 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:heat_sync/models/sensor_data_response.dart';
-import 'package:logger/logger.dart';
 import 'package:heat_sync/components/building_autocomplete.dart';
-import 'package:heat_sync/components/date_picker.dart';
 import 'package:heat_sync/components/unit_autocomplete.dart';
+import 'package:heat_sync/models/sensor_data_response.dart';
+import 'package:heat_sync/components/date_picker.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import '../components/temperature_graph.dart';
-import '../models/building_data.dart';
 import '../models/temperature_entry.dart';
+import '../services/sensor_service.dart';
+import '../models/building_data.dart';
 import '../models/unit_data.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 final logger = Logger();
 
@@ -26,6 +24,7 @@ class TemperaturePage extends StatefulWidget {
 class _TemperaturePageState extends State<TemperaturePage> {
   var selectedBuilding = BuildingData(fullAddress: '');
   var selectedUnit = UnitData(fullUnit: '');
+  SensorService sensorService = SensorService();
   Iterable<TemperatureEntry> temperatureEntries = <TemperatureEntry>[];
   SensorDataResponse sensorDataResponse = SensorDataResponse();
   List<int> bottomTileSpacer = [];
@@ -59,75 +58,22 @@ class _TemperaturePageState extends State<TemperaturePage> {
       startDate = start;
       endDate = end;
     });
-    // logger.i('DATE RANGE: $startDate - $endDate');
   }
 
-  // TODO: move this to sensor_service.dart
   void getTemperatureData() async {
-    // request sensor data from the server passing channelId, startTime, and endTime
-    await getSensorData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
-    // for (var entry in temperatureEntries) {
-    //   logger.i('ENTRY: ${entry.temperature}');
-    // }
-    spots = temperatureEntries
-        .map((entry) => FlSpot(
-              entry.serverTime.toDouble(),
-              double.parse((double.parse(entry.temperature) * (9 / 5) + 32).toStringAsFixed(2)),
-            ))
-        .toList();
+    Map<String, List<FlSpot>> data = {};
+    data = await sensorService.getTemperatureData(selectedUnit.channelId, startDate.toIso8601String(), endDate.toIso8601String());
 
-    outsideSpots = temperatureEntries
-        .map((entry) => FlSpot(
-              entry.serverTime.toDouble(),
-              double.parse((double.parse(entry.outsideTemperature) * (9 / 5) + 32).toStringAsFixed(2)),
-            ))
-        .toList();
-
-    // logger.i('SPOTS: $spots');
-    // logger.i('SPOTS: ${spots.first.x.runtimeType}, ${spots.first.y.runtimeType}');
-    // logger.i('OUTSIDE SPOTS: $outsideSpots');
+    logger.i('SPOTS: $spots');
+    logger.i('OUTSIDE SPOTS: $outsideSpots');
 
     setState(() {
-      spots = spots;
-      outsideSpots = outsideSpots;
+      spots = data['spots']!;
+      outsideSpots = data['outsideSpots']!;
     });
 
-    // logger.i('SPOTS: $spots');
-    double myInt = 12.05;
-    logger.i('${myInt.toDouble()}, ${myInt.runtimeType}, ${myInt.toDouble().runtimeType}');
-    logger.i('SPOTS: ${spots.first.x.toDouble().runtimeType}, ${spots.first.y.runtimeType}');
-    // logger.i('OUTSIDE SPOTS: $outsideSpots');
-  }
-
-  // TODO: move this to sensor_service.dart
-  Future<void> getSensorData(String? channelId, String dateRangeStart, String dateRangeEnd) async {
-    // logger.i('QUERY PARAMS: $channelId, $dateRangeStart, $dateRangeEnd');
-
-    final response = await http
-        .post(
-            // Uri.parse("http://localhost:8089/api/v1/sensor/filteredSensorData"),
-            Uri.parse('https://heat-sync-534f0413abe0.herokuapp.com/api/v1/sensor/filteredSensorData'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String?>{
-              'channelId': channelId,
-              'dateRangeStart': dateRangeStart,
-              'dateRangeEnd': dateRangeEnd,
-            }))
-        .catchError((onError) {
-      logger.e('Error fetching temperature data: $onError');
-      return onError;
-    });
-
-    SensorDataResponse res = SensorDataResponse.fromJson(json.decode(response.body));
-    logger.i("RESPONSE: ${res.sensorData[0].flutterSpot['value0'].runtimeType}, ${res.sensorData[0].flutterSpot['value1'].runtimeType}");
-
-    // setState(() => temperatureEntries = res.sensorData.map((entry) => TemperatureEntry.fromJson(entry)));
-    setState(() => temperatureEntries = res.sensorData);
-    setState(() => bottomTileSpacer = res.bottomTileSpacer);
-    // logger.i('SPACER: ${res.bottomTileSpacer}');
-    // logger.i('SENSOR DATA: ${res.sensorData}');
+    logger.i('SPOTS: $spots');
+    logger.i('OUTSIDE SPOTS: $outsideSpots');
   }
 
   @override
