@@ -26,18 +26,18 @@ class _TemperaturePageState extends State<TemperaturePage> {
   List<int> bottomTitleSpacer = [];
   List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
-  double bottomTitleInterval = double.infinity;
-  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 3);
+  double bottomTitleInterval = 1.0;
+  DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
   DateTime endDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
-    logger.i('SELECTED BUILDING: ${selectedBuilding.fullAddress}');
+    // logger.i('SELECTED BUILDING: ${selectedBuilding.fullAddress}');
   }
 
   void selectUnit(UnitData unit) {
     setState(() => selectedUnit = unit);
-    logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
+    // logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
   }
 
   void getStartDate(DateTime date) {
@@ -68,10 +68,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
       bottomTitleInterval = (data['bottomTitleSpacer'][1] - data['bottomTitleSpacer'][0]);
     });
 
-    logger.i('SPOTS: $spots');
-    logger.i('OUTSIDE SPOTS: $outsideSpots');
-    logger.i('BOTTOM TITLE SPACER: $bottomTitleSpacer');
-    logger.i('BOTTOM TITLE INTERVAL: $bottomTitleInterval');
+    // logger.i('SPOTS: $spots');
+    // logger.i('OUTSIDE SPOTS: $outsideSpots');
+    // logger.i('BOTTOM TITLE SPACER: $bottomTitleSpacer');
+    // logger.i('BOTTOM TITLE INTERVAL: $bottomTitleInterval');
   }
 
   @override
@@ -108,6 +108,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       children: [
                         const SizedBox(height: 10),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text('Date Range: ${DateFormat('MM/dd/yyyy').format(startDate)} - ${DateFormat('MM/dd/yyyy').format(endDate)}'),
                             const SizedBox(width: 10),
