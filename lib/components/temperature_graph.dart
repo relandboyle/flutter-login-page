@@ -14,7 +14,8 @@ class TemperatureGraph extends StatefulWidget {
   List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
   List<int> bottomTitleSpacer = [];
-  double bottomTitleInterval = 0.0;
+  double bottomTitleInterval;
+  Set<String> dateLabels = {};
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -22,12 +23,12 @@ class TemperatureGraph extends StatefulWidget {
 
 class _TemperatureGraphState extends State<TemperatureGraph> {
   List<Color> insideGradient = [
-    Colors.green.shade300,
-    Colors.blue.shade300,
+    const Color.fromRGBO(180, 0, 219, 86),
+    const Color.fromRGBO(0, 103, 219, 86),
   ];
   List<Color> outsideGradient = [
-    Colors.deepOrange.shade700,
-    Colors.deepPurple.shade700,
+    const Color.fromRGBO(219, 33, 0, 86),
+    const Color.fromRGBO(219, 110, 0, 86),
   ];
 
   bool showAvg = false;
@@ -63,6 +64,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    if (widget.bottomTitleSpacer.isEmpty) {
+      return Container();
+    }
     TextStyle style = TextStyle(
       color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.bold,
@@ -82,6 +86,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
+    if (widget.bottomTitleSpacer.isEmpty) {
+      return Container();
+    }
     TextStyle style = TextStyle(
       color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.bold,
@@ -90,7 +97,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     String text;
     switch (value.toInt()) {
       case 0:
-        text = value.toInt().toString();
+        text = '0°F';
         break;
       case 20:
         text = '20°F';
@@ -118,20 +125,23 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Theme.of(context).colorScheme.primaryContainer,
+          tooltipBgColor: Theme.of(context).colorScheme.secondaryContainer,
           getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
             // map is returning x and y for both touchedBarSpots
             // consider a loop and return x/y for one, y-only for the other
             return touchedBarSpots.map((barSpot) {
               // logger.i('BAR SPOT: $barSpot');
               final flSpot = barSpot;
-              if (flSpot.x == 0 || flSpot.x == widget.spots.last.x || flSpot.x == widget.outsideSpots.last.x) {
+              if (flSpot.x == widget.spots.first.x ||
+                  flSpot.x == widget.outsideSpots.first.x ||
+                  flSpot.x == widget.spots.last.x ||
+                  flSpot.x == widget.outsideSpots.last.x) {
                 return null;
               }
               String date = getFormattedDate(flSpot.x);
               return LineTooltipItem(
                 '${flSpot.y}°F\n$date',
-                const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.bold),
               );
             }).toList();
           },
@@ -143,7 +153,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         drawVerticalLine: true,
         horizontalInterval: 5,
-        verticalInterval: 34200000,
+        verticalInterval: widget.bottomTitleInterval,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: Theme.of(context).colorScheme.secondary,
@@ -169,7 +179,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 50,
-            interval: 34200000,
+            interval: widget.bottomTitleInterval,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
@@ -214,12 +224,12 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         LineChartBarData(
           // curveSmoothness: 1.5,
           spots: widget.outsideSpots.isNotEmpty ? widget.outsideSpots : [const FlSpot(0.0, 0.0)],
-          isCurved: false,
+          isCurved: true,
           gradient: LinearGradient(
             colors: outsideGradient,
           ),
           barWidth: 3,
-          isStrokeCapRound: false,
+          isStrokeCapRound: true,
           dotData: const FlDotData(
             show: false,
           ),
@@ -228,7 +238,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
             gradient: LinearGradient(
               begin: const Alignment(-1.0, 0.0),
               end: const Alignment(1.0, 0.0),
-              colors: outsideGradient.map((color) => color.withOpacity(0.3)).toList(),
+              colors: outsideGradient.map((color) => color.withOpacity(0.2)).toList(),
             ),
           ),
         ),

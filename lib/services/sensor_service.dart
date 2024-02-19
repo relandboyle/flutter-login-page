@@ -61,7 +61,7 @@ class SensorService {
 
     SensorDataResponse res = SensorDataResponse.fromJson(json.decode(response.body));
     // logger.i('${res.sensorData}');
-    logger.i('${res.bottomTitleSpacer}');
+    // logger.i('${res.bottomTitleSpacer}');
     return res;
   }
 }
