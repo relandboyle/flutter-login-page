@@ -19,7 +19,6 @@ class SensorService {
       spots = response.sensorData
           .map((entry) => FlSpot(
                 entry.serverTime.toDouble(),
-                // double.parse(entry.serverTime.toString()),
                 double.parse((double.parse(entry.temperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
           .toList();
@@ -27,7 +26,6 @@ class SensorService {
       outsideSpots = response.sensorData
           .map((entry) => FlSpot(
                 entry.serverTime.toDouble(),
-                // double.parse(entry.serverTime.toString()),
                 double.parse((double.parse(entry.outsideTemperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
           .toList();
@@ -37,7 +35,6 @@ class SensorService {
       logger.e('Error getting sensor data: $e');
     }
 
-    // logger.i('Is this a SPOT? ${spots.first.runtimeType}');
     return <String, dynamic>{'spots': spots, 'outsideSpots': outsideSpots, 'bottomTitleSpacer': bottomTitleSpacer};
   }
 
@@ -60,8 +57,6 @@ class SensorService {
     });
 
     SensorDataResponse res = SensorDataResponse.fromJson(json.decode(response.body));
-    // logger.i('${res.sensorData}');
-    // logger.i('${res.bottomTitleSpacer}');
     return res;
   }
 }

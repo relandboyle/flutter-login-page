@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -125,12 +124,11 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Theme.of(context).colorScheme.secondaryContainer,
+          tooltipBgColor: Theme.of(context).colorScheme.primaryContainer,
           getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
             // map is returning x and y for both touchedBarSpots
             // consider a loop and return x/y for one, y-only for the other
             return touchedBarSpots.map((barSpot) {
-              // logger.i('BAR SPOT: $barSpot');
               final flSpot = barSpot;
               if (flSpot.x == widget.spots.first.x ||
                   flSpot.x == widget.outsideSpots.first.x ||
@@ -141,12 +139,11 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
               String date = getFormattedDate(flSpot.x);
               return LineTooltipItem(
                 '${flSpot.y}°F\n$date',
-                TextStyle(color: Theme.of(context).colorScheme.onSecondaryContainer, fontWeight: FontWeight.bold),
+                TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
               );
             }).toList();
           },
         ),
-        // touchCallback: (LineTouchResponse touchResponse) {},
         handleBuiltInTouches: true,
       ),
       gridData: FlGridData(
