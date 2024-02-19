@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -12,7 +14,7 @@ class TemperatureGraph extends StatefulWidget {
   List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
   List<int> bottomTitleSpacer = [];
-  double bottomTitleInterval = double.infinity;
+  double bottomTitleInterval = 0.0;
 
   @override
   State<TemperatureGraph> createState() => _TemperatureGraphState();
@@ -30,9 +32,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
 
   bool showAvg = false;
 
-  String getFormattedDate(int dateMillis) {
-    String formattedDate = DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(dateMillis));
-    logger.i('FORMATTED DATE: $formattedDate');
+  String getFormattedDate(double dateMillis) {
+    String formattedDate = DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(dateMillis.toInt()));
+    // logger.i('FORMATTED DATE: $formattedDate');
     return formattedDate;
   }
 
@@ -61,28 +63,27 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Colors.blueGrey,
+    TextStyle style = TextStyle(
+      color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 12,
     );
-    String date = getFormattedDate(value.toInt());
-    // logger.i('DATE: $date');
+    String date;
     Widget text;
-
-    if (widget.bottomTitleSpacer.contains(value.toInt())) {
-      logger.i('VALUE: $value');
-      text = Text(date, style: style);
-    } else {
-      text = const Text('', style: style);
-    }
-
+    date = getFormattedDate(value);
+    text = Transform.translate(
+      offset: const Offset(-15.0, 22.0),
+      child: Transform.rotate(
+        angle: -pi / 5,
+        child: Text(date, style: style),
+      ),
+    );
     return text;
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      color: Colors.blueGrey,
+    TextStyle style = TextStyle(
+      color: Theme.of(context).colorScheme.onPrimary,
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
@@ -117,17 +118,19 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Theme.of(context).colorScheme.primary,
+          tooltipBgColor: Theme.of(context).colorScheme.primaryContainer,
           getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
             // map is returning x and y for both touchedBarSpots
             // consider a loop and return x/y for one, y-only for the other
             return touchedBarSpots.map((barSpot) {
+              // logger.i('BAR SPOT: $barSpot');
               final flSpot = barSpot;
-              if (flSpot.x == 0 || flSpot.x == 11) {
+              if (flSpot.x == 0 || flSpot.x == widget.spots.last.x || flSpot.x == widget.outsideSpots.last.x) {
                 return null;
               }
+              String date = getFormattedDate(flSpot.x);
               return LineTooltipItem(
-                '${flSpot.y}°F\n${flSpot.x}',
+                '${flSpot.y}°F\n$date',
                 const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               );
             }).toList();
@@ -140,7 +143,7 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         drawVerticalLine: true,
         horizontalInterval: 5,
-        verticalInterval: 0.0005,
+        verticalInterval: 34200000,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: Theme.of(context).colorScheme.secondary,
@@ -149,13 +152,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: Theme.of(context).colorScheme.secondary,
             strokeWidth: 1,
           );
         },
       ),
       titlesData: FlTitlesData(
-        show: false,
+        show: true,
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
@@ -164,9 +167,9 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: false,
-            reservedSize: 30,
-            interval: widget.spots.length / 10,
+            showTitles: true,
+            reservedSize: 50,
+            interval: 34200000,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),

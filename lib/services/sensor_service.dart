@@ -16,10 +16,9 @@ class SensorService {
 
     try {
       response = await getSensorData(channelId, startDate.toIso8601String(), endDate.toIso8601String());
-      logger.i('TRY TRY AGAIN');
       spots = response.sensorData
           .map((entry) => FlSpot(
-                entry.serverTime.toDouble() / 1000000000,
+                entry.serverTime.toDouble(),
                 // double.parse(entry.serverTime.toString()),
                 double.parse((double.parse(entry.temperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
@@ -27,7 +26,7 @@ class SensorService {
 
       outsideSpots = response.sensorData
           .map((entry) => FlSpot(
-                entry.serverTime.toDouble() / 1000000000,
+                entry.serverTime.toDouble(),
                 // double.parse(entry.serverTime.toString()),
                 double.parse((double.parse(entry.outsideTemperature) * (9 / 5) + 32).toStringAsFixed(2)),
               ))
@@ -59,12 +58,9 @@ class SensorService {
       logger.e('Error fetching temperature data: $onError');
       return onError;
     });
-    logger.i('TRY TRY AGAIN');
 
     SensorDataResponse res = SensorDataResponse.fromJson(json.decode(response.body));
-    logger.i('TRY TRY AGAIN');
-
-    logger.i('${res.sensorData}');
+    // logger.i('${res.sensorData}');
     logger.i('${res.bottomTitleSpacer}');
     return res;
   }
