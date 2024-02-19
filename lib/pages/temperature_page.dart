@@ -42,18 +42,18 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
   void getStartDate(DateTime date) {
     setState(() => startDate = date);
-    logger.i('START DATE: $startDate');
+    // logger.i('START DATE: $startDate');
   }
 
   void getEndDate(DateTime date) {
     setState(() => endDate = DateTime(date.year, date.month, date.day, 23, 59, 59));
-    logger.i('END DATE: $endDate');
+    // logger.i('END DATE: $endDate');
   }
 
   void getDateRange(DateTime start, DateTime end) {
     setState(() {
-      startDate = start;
-      endDate = end;
+      startDate = DateTime.utc(start.year, start.month, start.day, 0, 0, 0);
+      endDate = DateTime.utc(end.year, end.month, end.day, 23, 59, 59);
     });
   }
 

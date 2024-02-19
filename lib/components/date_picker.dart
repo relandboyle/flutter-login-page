@@ -10,13 +10,21 @@ class DatePicker extends StatefulWidget {
 
   @override
   State<DatePicker> createState() => _DatePickerState();
+
   DateTime startDate;
   DateTime endDate;
+  DateTime todayMinus7 = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
   DateTime today = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59);
   Function(DateTime, DateTime) dateGetter;
 }
 
 class _DatePickerState extends State<DatePicker> {
+  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
+    if (args.value.startDate != null && args.value.endDate != null) {
+      widget.dateGetter(args.value.startDate, args.value.endDate);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -47,22 +55,12 @@ class _DatePickerState extends State<DatePicker> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40, left: 40, right: 40),
                   child: SfDateRangePicker(
-                    showNavigationArrow: true,
-                    showTodayButton: true,
-                    minDate: DateTime.utc(2021, 1, 1),
-                    maxDate: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59),
-                    selectionMode: DateRangePickerSelectionMode.range,
-                    initialSelectedRange: PickerDateRange(widget.startDate, widget.endDate),
-                    onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                      logger.i('1 ${args.value.toString()}');
-                      // setState(() {
-                      //   widget.startDate = args.value.startDate;
-                      //   widget.endDate = args.value.endDate ?? args.value.startDate;
-                      // });
-                      // widget.dateGetter(args.value.startDate, args.value.endDate);
-                      logger.i('2 ${widget.startDate}, ${widget.endDate}');
-                    },
-                  ),
+                      showNavigationArrow: true,
+                      minDate: DateTime.utc(2021, 1, 1),
+                      maxDate: DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59),
+                      selectionMode: DateRangePickerSelectionMode.range,
+                      initialSelectedRange: PickerDateRange(widget.startDate, widget.endDate),
+                      onSelectionChanged: _onSelectionChanged),
                 ),
               ),
               // const SizedBox(height: 15),
