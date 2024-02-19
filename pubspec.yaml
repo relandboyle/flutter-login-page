@@ -49,8 +49,8 @@ dependencies:
   provider: ^6.1.1
   syncfusion_flutter_datepicker: ^24.2.4
 
-dependency_overrides:
-  web: ^0.3.0
+# dependency_overrides:
+#   web: ^0.3.0
 #   firebase_auth_web:
 #     git:
 #       url: git@github.com:firebase/flutterfire.git
