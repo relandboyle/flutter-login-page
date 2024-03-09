@@ -18,12 +18,8 @@ class _AuthPageState extends State<AuthPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // logger.i(snapshot);
-            // logger.i(snapshot.hasData);
             return const HomePage();
           } else {
-            // logger.i(snapshot);
-            // logger.i(snapshot.hasData);
             return const LoginOrRegisterPage();
           }
         },

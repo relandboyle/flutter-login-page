@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:heat_sync/pages/landing.dart';
 import 'package:heat_sync/theme/theme_provider.dart';
 import 'authentication/auth_page.dart';
 import 'firebase_options.dart';
@@ -40,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'HeatSync',
       theme: Provider.of<ThemeProvider>(context).themeMode,
-      home: const AuthPage(),
+      home: const LandingPage(),
     );
   }
 }
