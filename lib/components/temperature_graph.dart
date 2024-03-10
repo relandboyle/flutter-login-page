@@ -8,9 +8,10 @@ final logger = Logger();
 
 // ignore: must_be_immutable
 class TemperatureGraph extends StatefulWidget {
-  TemperatureGraph({super.key, required this.spots, required this.outsideSpots, required this.bottomTitleSpacer, required this.bottomTitleInterval});
+  TemperatureGraph(
+      {super.key, required this.insideSpots, required this.outsideSpots, required this.bottomTitleSpacer, required this.bottomTitleInterval});
 
-  List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
+  List<FlSpot> insideSpots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
   List<int> bottomTitleSpacer = [];
   double bottomTitleInterval;
@@ -29,8 +30,6 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
     const Color.fromRGBO(219, 33, 0, 86),
     const Color.fromRGBO(219, 110, 0, 86),
   ];
-
-  bool showAvg = false;
 
   String getFormattedDate(double dateMillis) {
     String formattedDate = DateFormat('EEE, MMM d').format(DateTime.fromMillisecondsSinceEpoch(dateMillis.toInt()));
@@ -130,16 +129,19 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
             // consider a loop and return x/y for one, y-only for the other
             return touchedBarSpots.map((barSpot) {
               final flSpot = barSpot;
-              if (flSpot.x == widget.spots.first.x ||
+              if (flSpot.x == widget.insideSpots.first.x ||
                   flSpot.x == widget.outsideSpots.first.x ||
-                  flSpot.x == widget.spots.last.x ||
+                  flSpot.x == widget.insideSpots.last.x ||
                   flSpot.x == widget.outsideSpots.last.x) {
                 return null;
               }
               String date = getFormattedDate(flSpot.x);
               return LineTooltipItem(
                 '${flSpot.y}°F\n$date',
-                TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
               );
             }).toList();
           },
@@ -193,13 +195,13 @@ class _TemperatureGraphState extends State<TemperatureGraph> {
         show: true,
         border: Border.all(color: Theme.of(context).colorScheme.secondary),
       ),
-      minX: widget.spots.first.x,
-      maxX: widget.spots.last.x,
+      minX: widget.insideSpots.first.x,
+      maxX: widget.insideSpots.last.x,
       minY: -10,
       maxY: 110,
       lineBarsData: [
         LineChartBarData(
-          spots: widget.spots.isNotEmpty ? widget.spots : [const FlSpot(0.0, 0.0)],
+          spots: widget.insideSpots.isNotEmpty ? widget.insideSpots : [const FlSpot(0.0, 0.0)],
           isCurved: true,
           gradient: LinearGradient(
             colors: insideGradient,

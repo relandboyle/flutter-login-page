@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heat_sync/pages/landing_page.dart';
 import '../pages/buildings_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
@@ -15,7 +16,7 @@ class WebBody extends StatefulWidget {
 }
 
 class _WebBodyState extends State<WebBody> {
-  int selectedIndex = 0;
+  int selectedIndex = 4;
 
   void selectPage(int index) {
     setState(() {
@@ -28,6 +29,7 @@ class _WebBodyState extends State<WebBody> {
     BuildingsPage(),
     UnitsPage(),
     ProfilePage(),
+    LandingPage()
   ];
 
   @override
@@ -40,9 +42,16 @@ class _WebBodyState extends State<WebBody> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'HeatSync',
-          style: textStyle,
+        title: TextButton(
+          onPressed: () => selectPage(4),
+          child: Text(
+            'HeatSync',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 25
+            ),
+          ),
         ),
         foregroundColor: foregroundColor,
         backgroundColor: backgroundColor,

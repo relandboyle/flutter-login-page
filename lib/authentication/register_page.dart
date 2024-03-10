@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../components/my_button.dart';
+import '../components/my_icon_button.dart';
 import '../components/my_loading_dialog.dart';
-import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
 
@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Row(children: [
                     Expanded(
                         child: Divider(
-                      thickness: 0.5,
+                      thickness: 2,
                       color: Colors.grey[400],
                     )),
                     Padding(
@@ -124,30 +124,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Text('Or continue with:', style: TextStyle(color: Colors.grey[700]))),
                     Expanded(
                         child: Divider(
-                      thickness: 0.5,
+                      thickness: 2,
                       color: Colors.grey[400],
                     )),
                   ])),
               const SizedBox(height: 50),
-              // google + apple sign in buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MySquareTile(
-                    imagePath: 'lib/images/google.png',
-                    onTap: () => AuthService().authenticateWithGoogle(),
-                  ),
-                  const SizedBox(width: 20),
-                  MySquareTile(
-                    imagePath: 'lib/images/github.png',
-                    onTap: () => logger.i(widget),
-                  ),
-                  const SizedBox(width: 20),
-                  MySquareTile(
-                    imagePath: 'lib/images/apple.png',
-                    onTap: () => logger.i(widget),
-                  ),
-                ],
+              MyIconButton(
+                buttonAction: () => AuthService().authenticateWithGoogle(),
+                label: 'Sign in with Google',
               ),
               const SizedBox(height: 50),
             ],

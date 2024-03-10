@@ -24,7 +24,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
   var selectedUnit = UnitData(fullUnit: '');
   SensorService sensorService = SensorService();
   List<int> bottomTitleSpacer = [];
-  List<FlSpot> spots = [const FlSpot(0.0, 0.0)];
+  List<FlSpot> insideSpots = [const FlSpot(0.0, 0.0)];
   List<FlSpot> outsideSpots = [const FlSpot(0.0, 0.0)];
   double bottomTitleInterval = 1.0;
   DateTime startDate = DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day - 7);
@@ -32,22 +32,18 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
   void selectBuilding(BuildingData building) {
     setState(() => selectedBuilding = building);
-    // logger.i('SELECTED BUILDING: ${selectedBuilding.fullAddress}');
   }
 
   void selectUnit(UnitData unit) {
     setState(() => selectedUnit = unit);
-    // logger.i('SELECTED UNIT: ${selectedUnit.fullUnit}');
   }
 
   void getStartDate(DateTime date) {
     setState(() => startDate = date);
-    // logger.i('START DATE: $startDate');
   }
 
   void getEndDate(DateTime date) {
     setState(() => endDate = DateTime(date.year, date.month, date.day, 23, 59, 59));
-    // logger.i('END DATE: $endDate');
   }
 
   void getDateRange(DateTime start, DateTime end) {
@@ -62,16 +58,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
     data = await sensorService.getTemperatureData(selectedUnit.channelId, startDate, endDate);
 
     setState(() {
-      spots = data['spots'];
+      insideSpots = data['spots'];
       outsideSpots = data['outsideSpots'];
       bottomTitleSpacer = data['bottomTitleSpacer'];
       bottomTitleInterval = (data['bottomTitleSpacer'][1] - data['bottomTitleSpacer'][0]);
     });
-
-    // logger.i('SPOTS: $spots');
-    // logger.i('OUTSIDE SPOTS: $outsideSpots');
-    // logger.i('BOTTOM TITLE SPACER: $bottomTitleSpacer');
-    // logger.i('BOTTOM TITLE INTERVAL: $bottomTitleInterval');
   }
 
   @override
@@ -92,7 +83,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     color: Theme.of(context).colorScheme.primary,
                     elevation: 10,
                     child: TemperatureGraph(
-                      spots: spots,
+                      insideSpots: insideSpots,
                       outsideSpots: outsideSpots,
                       bottomTitleSpacer: bottomTitleSpacer,
                       bottomTitleInterval: bottomTitleInterval,
