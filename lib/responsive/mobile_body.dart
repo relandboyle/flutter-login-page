@@ -7,6 +7,7 @@ import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
 import '../theme/theme_provider.dart';
+import '../theme/theme_data.dart';
 
 class MobileBody extends StatefulWidget {
   const MobileBody({super.key});
@@ -33,13 +34,14 @@ class _MobileBodyState extends State<MobileBody> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(top: 10.0),
         child: FloatingActionButton(
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
           elevation: 10,
           highlightElevation: 10,
           onPressed: () {
             Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
           },
           backgroundColor: Theme.of(context).colorScheme.primary,
-          child: Theme.of(context).brightness == Brightness.light
+          child: Provider.of<ThemeProvider>(context).themeMode == lightTheme
               ? const Icon(
                   Icons.nightlight_round,
                 )

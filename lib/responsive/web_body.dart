@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:heat_sync/pages/landing_page.dart';
+import 'package:provider/provider.dart';
 import '../pages/buildings_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
-import 'package:provider/provider.dart';
-
 import '../theme/theme_provider.dart';
+import '../theme/theme_data.dart';
 
 class WebBody extends StatefulWidget {
   const WebBody({super.key});
@@ -42,15 +42,11 @@ class _WebBodyState extends State<WebBody> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TextButton(
-          onPressed: () => selectPage(4),
+        title: GestureDetector(
+          onTap: () => selectPage(4),
           child: Text(
             'HeatSync',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 25
-            ),
+            style: textStyle,
           ),
         ),
         foregroundColor: foregroundColor,
@@ -141,7 +137,7 @@ class _WebBodyState extends State<WebBody> {
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
             },
-            icon: Theme.of(context).brightness == Brightness.light
+            icon: Provider.of<ThemeProvider>(context).themeMode == lightTheme
                 ? const Icon(
                     Icons.nightlight_round,
                   )
@@ -149,7 +145,7 @@ class _WebBodyState extends State<WebBody> {
                     Icons.wb_sunny_rounded,
                   ),
             hoverColor: Theme.of(context).colorScheme.secondary,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
           const SizedBox(width: 15),
         ],
