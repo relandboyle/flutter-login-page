@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:heat_sync/components/my_icon_button.dart';
 import 'package:logger/logger.dart';
 import '../components/my_button.dart';
 import '../components/my_loading_dialog.dart';
-import '../components/my_square_tile.dart';
 import '../components/my_textfield.dart';
 import '../services/auth_service.dart';
 
@@ -105,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 25),
               // sign in button
               MyButton(
                 onTap: signUserIn,
@@ -134,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(children: [
                     Expanded(
                         child: Divider(
-                      thickness: 0.5,
+                      thickness: 2,
                       color: Colors.grey[400],
                     )),
                     Padding(
@@ -146,30 +145,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Expanded(
                         child: Divider(
-                      thickness: 0.5,
+                      thickness: 2,
                       color: Colors.grey[400],
                     )),
                   ])),
               const SizedBox(height: 50),
-              // google + apple sign in buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MySquareTile(
-                    imagePath: 'lib/images/google.png',
-                    onTap: () => AuthService().authenticateWithGoogle(),
-                  ),
-                  const SizedBox(width: 20),
-                  MySquareTile(
-                    imagePath: 'lib/images/github.png',
-                    onTap: () => logger.i(widget),
-                  ),
-                  const SizedBox(width: 20),
-                  MySquareTile(
-                    imagePath: 'lib/images/apple.png',
-                    onTap: () => logger.i(widget),
-                  ),
-                ],
+              MyIconButton(
+                buttonAction: () => AuthService().authenticateWithGoogle(),
+                label: 'Sign in with Google',
               ),
               const SizedBox(height: 50),
             ],

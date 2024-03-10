@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
-  final void Function()? onTap;
+  final void Function() onTap;
   final String label;
 
   const MyButton({super.key, required this.onTap, required this.label});

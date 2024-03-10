@@ -30,7 +30,7 @@ ThemeData darkTheme = ThemeData(
     primary: Color.fromRGBO(27, 71, 111, 1),
     onPrimary: Color.fromRGBO(116, 177, 233, 1),
     primaryContainer: Color.fromRGBO(12, 34, 54, 1),
-    onPrimaryContainer: Color.fromRGBO(21, 60, 97, 1),
+    onPrimaryContainer: Color.fromARGB(255, 21, 60, 97),
     inversePrimary: Color.fromRGBO(35, 82, 126, 0.1),
     secondary: Color.fromRGBO(96, 92, 83, 1),
     onSecondary: Color.fromRGBO(165, 157, 142, 1),

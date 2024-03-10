@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../pages/buildings_page.dart';
+import '../pages/landing_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/temperature_page.dart';
 import '../pages/units_page.dart';
@@ -15,13 +16,14 @@ class MobileBody extends StatefulWidget {
 }
 
 class _MobileBodyState extends State<MobileBody> {
-  int selectedIndex = 0;
+  int selectedIndex = 4;
 
   static const List<Widget> displayPages = <Widget>[
     TemperaturePage(),
     BuildingsPage(),
     UnitsPage(),
     ProfilePage(),
+    LandingPage()
   ];
 
   @override
